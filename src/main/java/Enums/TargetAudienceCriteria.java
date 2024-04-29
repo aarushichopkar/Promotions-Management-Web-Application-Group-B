@@ -4,5 +4,4 @@ public enum TargetAudienceCriteria {
 
     MALE,
     FEMALE,
-    OTHER
 }
