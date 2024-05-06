@@ -15,6 +15,7 @@ public class PromotionService {
         this.promotionRepo = promotionRepo;
     }
     public Promotion addPromotion(Promotion promotion) {
+        promotion.setActive(true);
         return promotionRepo.save(promotion);
     }
 }
