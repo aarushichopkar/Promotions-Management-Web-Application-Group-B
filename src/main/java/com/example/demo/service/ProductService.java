@@ -11,13 +11,12 @@ import java.util.Optional;
 
 @Service
 public class ProductService {
-//    private final ProductRepo productRepo;
-    private final PromotionRepo promotionRepo;
 
     @Autowired
-    public ProductService(PromotionRepo promotionRepo){
-        this.promotionRepo = promotionRepo;
-    }
+    ProductRepo productRepo;
+
+    @Autowired
+    PromotionRepo promotionRepo;
 
 
     public Product addProduct(long promotion_id, Product product) throws Exception {
@@ -36,12 +35,13 @@ public class ProductService {
         //set foundPromotion as promotion in product entity
         product.setPromotion(foundPromotion);
 
-        // since we have cascade relation between product and promotion
-        // only save promotion
+        // save both product and promotion
+        Product savedProduct = productRepo.save(product);
         Promotion savedPromotion = promotionRepo.save(foundPromotion);
 
+        return savedProduct;
         // return recently added product
-        int size = savedPromotion.getApplicableProducts().size();
-        return savedPromotion.getApplicableProducts().get(size-1);
+//        int size = savedPromotion.getApplicableProducts().size();
+//        return savedPromotion.getApplicableProducts().get(size-1);
     }
 }
