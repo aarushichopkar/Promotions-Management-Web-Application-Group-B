@@ -20,8 +20,8 @@ public class Product {
     String description;
     double price;
 
-//    @ManyToOne
-//    @JoinColumn(name = "promotion_id")
-//    @JsonIgnore
-//    Promotion promotion;
+    @ManyToOne
+    @JoinColumn(name = "promotion_id")
+    @JsonIgnore
+    Promotion promotion;
 }
