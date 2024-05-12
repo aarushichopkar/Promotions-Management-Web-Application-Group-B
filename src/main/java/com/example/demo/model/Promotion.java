@@ -21,10 +21,16 @@ public class Promotion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
+    long manager_id;
+
+    long Owner_id;
+
     String promotionType;
 
     @CreationTimestamp
-    LocalDate duration;
+    LocalDate creation_time;
+
+    int duration;
 
     double discountRate;
 
