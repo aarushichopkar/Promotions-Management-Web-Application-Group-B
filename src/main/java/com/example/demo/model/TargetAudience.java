@@ -1,12 +1,7 @@
-package Model;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package com.example.demo.model;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -16,14 +11,22 @@ import java.util.List;
 @Getter
 @Entity
 public class TargetAudience {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
+    String name;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "demographics_id")
     Demographics Demographics;
 
-    List<PurchaseHistory> purchaseHistory;
+//    List<PurchaseHistory> purchaseHistory;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userBehaviour_id")
     UserBehaviour userBehaviour;
-
 }
+
+
+

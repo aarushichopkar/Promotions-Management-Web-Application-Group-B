@@ -3,10 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.UserBehaviour;
 import com.example.demo.service.UserBehaviourService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user_behaviour")
@@ -20,7 +17,9 @@ public class UserBehaviourController {
     }
 
     @PostMapping("/add")
-    public UserBehaviour addUserBehaviour(@RequestBody UserBehaviour userBehaviour){
-        return userBehaviourService.addUserBehaviour(userBehaviour);
+    public String addUserBehaviour(@RequestParam("audience_id") long audience_id,
+                                          @RequestBody UserBehaviour userBehaviour) throws  Exception{
+        userBehaviourService.addUserBehaviour(audience_id, userBehaviour);
+        return "User behaviour added";
     }
 }

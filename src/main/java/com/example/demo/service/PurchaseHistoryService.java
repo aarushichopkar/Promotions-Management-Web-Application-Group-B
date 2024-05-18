@@ -14,15 +14,18 @@ public class PurchaseHistoryService {
 
     @Autowired
     PurchaseHistoryRepo purchaseHistoryRepo;
+
+    @Autowired
     ProductRepo productRepo;
 
     public void purchase(int productId) throws Exception {
-        Product product;
-        try{
-            product = productRepo.findById(productId).get();
-        } catch(Exception e){
+
+        Optional<Product> optionalProduct = productRepo.findById(productId);
+        if(optionalProduct.isEmpty()){
             throw new Exception("product not found");
         }
+        Product product = optionalProduct.get();
+
         PurchaseHistory purchaseHistory = PurchaseHistory.builder()
                 .product(product)
                 .build();

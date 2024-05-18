@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.enums.PaymentMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +22,6 @@ public class UserBehaviour {
     long id;
 
 //    LocalDate lastLoginDate;
-
     int purchaseFrequency;
+    PaymentMode paymentMode;
 }

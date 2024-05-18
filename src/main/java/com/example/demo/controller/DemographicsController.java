@@ -16,7 +16,9 @@ public class DemographicsController {
     }
 
     @PostMapping("/add")
-    public Demographics addDemographics(@RequestBody Demographics demographics){
-        return demographicsService.addDemographics(demographics);
+    public String addDemographics(@RequestParam("audience_id") long audience_id,
+                                        @RequestBody Demographics demographics) throws Exception{
+        demographicsService.addDemographics(audience_id, demographics);
+        return "demographics added";
     }
 }

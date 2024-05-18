@@ -24,7 +24,7 @@ public class Promotion {
     String promotionType;
 
     @CreationTimestamp
-    LocalDate duration;
+    LocalDate creationDate;
 
     double discountRate;
 
