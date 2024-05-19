@@ -25,6 +25,8 @@ public class PurchaseHistory {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     Product product;
+
+
 }
 
 

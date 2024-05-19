@@ -15,7 +15,9 @@ public class PurchaseHistoryController {
     PurchaseHistoryService purchaseHistoryService;
 
     @PostMapping("/purchase")
-    public void purchase(@RequestParam("product_id") int product_id) throws Exception {
-        purchaseHistoryService.purchase(product_id);
+    public String purchase(@RequestParam("product_id") int product_id,
+                         @RequestParam("audience_id") long audience_id) throws Exception {
+        purchaseHistoryService.purchase(product_id, audience_id);
+        return audience_id + " id audience purchased " + product_id + " id product";
     }
 }

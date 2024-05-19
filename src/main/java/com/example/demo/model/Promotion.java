@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.enums.TargetAudienceCriteria;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -31,7 +32,7 @@ public class Promotion {
     @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL)
     List<Product> applicableProducts = new ArrayList<>();
 
-//    TargetAudienceCriteria tragetAudienceCriteria;
+    TargetAudienceCriteria targetAudienceCriteria;
 
     boolean isActive;
 }
