@@ -16,12 +16,14 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @Entity
+@Builder
 public class UserBehaviour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
 //    LocalDate lastLoginDate;
+    LocalDate lastPurchaseDate;
     int purchaseFrequency;
     PaymentMode paymentMode;
 }

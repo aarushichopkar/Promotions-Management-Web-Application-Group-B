@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.enums.PaymentMode;
 import com.example.demo.service.PurchaseHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +17,9 @@ public class PurchaseHistoryController {
 
     @PostMapping("/purchase")
     public String purchase(@RequestParam("product_id") int product_id,
-                         @RequestParam("audience_id") long audience_id) throws Exception {
-        purchaseHistoryService.purchase(product_id, audience_id);
+                           @RequestParam("audience_id") long audience_id,
+                           @RequestParam("mode")PaymentMode mode) throws Exception {
+        purchaseHistoryService.purchase(product_id, audience_id, mode);
         return audience_id + " id audience purchased " + product_id + " id product";
     }
 }

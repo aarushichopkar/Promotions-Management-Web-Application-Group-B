@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.enums.PaymentMode;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -25,7 +26,7 @@ public class PurchaseHistory {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     Product product;
-
+    PaymentMode mode;
 
 }
 
