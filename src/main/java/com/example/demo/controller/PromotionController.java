@@ -3,10 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.model.Promotion;
 import com.example.demo.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/promotion")
@@ -22,5 +21,16 @@ public class PromotionController {
     @PostMapping("/add")
     public Promotion addPromotion(@RequestBody Promotion promotion){
         return promotionService.addPromotion(promotion);
+    }
+
+    @GetMapping("/find-all")
+    public List<Promotion> find_all_promotion(){
+            return (List<Promotion>) promotionService.find_all_promotion();
+    }
+
+    @PutMapping("/update")
+    public Promotion update(@RequestParam("id") long promotion_id,
+                            @RequestBody Promotion promotion){
+       return promotionService.updatePromotion(promotion_id,promotion);
     }
 }
