@@ -35,8 +35,10 @@ public class PromotionController {
        return promotionService.updatePromotion(promotion_id,promotion);
     }
 
+    // find promotions targeted for particular audience
+    // taking audience id as input
     @GetMapping("/find-by-criteria")
-    public List<Promotion> findByCriteria(@RequestParam("criteria")TargetAudienceCriteria criteria){
-        return promotionService.findByCriteria(criteria);
+    public List<Promotion> findByCriteria(@RequestParam("id") long id) throws Exception{
+        return promotionService.findByCriteria(id);
     }
 }

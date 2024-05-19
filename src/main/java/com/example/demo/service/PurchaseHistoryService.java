@@ -47,6 +47,7 @@ public class PurchaseHistoryService {
 
         purchaseHistoryRepo.save(purchaseHistory);
 
+        // user behaviour should be updated on every purchase
         // if user behaviour is null;
         if(targetAudience.getUserBehaviour() == null){
             UserBehaviour userBehaviour = UserBehaviour.builder()
