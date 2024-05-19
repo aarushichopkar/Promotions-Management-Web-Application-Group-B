@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.enums.TargetAudienceCriteria;
 import com.example.demo.model.Promotion;
 import com.example.demo.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,10 @@ public class PromotionController {
     public Promotion update(@RequestParam("id") long promotion_id,
                             @RequestBody Promotion promotion){
        return promotionService.updatePromotion(promotion_id,promotion);
+    }
+
+    @GetMapping("/find-by-criteria")
+    public List<Promotion> findByCriteria(@RequestParam("criteria")TargetAudienceCriteria criteria){
+        return promotionService.findByCriteria(criteria);
     }
 }

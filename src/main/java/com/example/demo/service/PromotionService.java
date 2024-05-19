@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.enums.TargetAudienceCriteria;
 import com.example.demo.model.Promotion;
 import com.example.demo.repository.PromotionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,9 @@ public class PromotionService {
         pro.setApplicableProducts(promotion.getApplicableProducts());
         promotionRepo.save(pro);
        return pro;
+    }
+
+    public List<Promotion> findByCriteria(TargetAudienceCriteria criteria) {
+        return promotionRepo.findByTargetAudienceCriteria(criteria);
     }
 }
