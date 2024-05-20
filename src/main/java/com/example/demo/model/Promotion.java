@@ -1,11 +1,14 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +28,22 @@ public class Promotion {
 
     long Owner_id;
 
+    @NotNull
     String promotionType;
 
     @CreationTimestamp
     LocalDate creation_time;
 
-    int duration;
+    @NotNull
+    private LocalDateTime start_time;
 
-    double discountRate;
+    @NotNull
+    private LocalDateTime end_time;
+
+    @NotNull
+    private ZoneId timeZone;
+
+    double discount_rate;
 
     @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL)
     List<Product> applicableProducts = new ArrayList<>();
