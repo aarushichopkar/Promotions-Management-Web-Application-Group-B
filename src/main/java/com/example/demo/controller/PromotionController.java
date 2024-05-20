@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.EmailRequest;
 import com.example.demo.dto.EmailResponse;
+import com.example.demo.enums.TargetAudienceCriteria;
 import com.example.demo.model.Promotion;
 import com.example.demo.service.PromotionService;
 import jakarta.validation.Valid;
@@ -55,5 +56,12 @@ public class PromotionController {
     public Promotion update(@RequestParam("id") long promotion_id,
                             @RequestBody Promotion promotion){
        return promotionService.updatePromotion(promotion_id,promotion);
+    }
+
+    // find promotions targeted for particular audience
+    // taking audience id as input
+    @GetMapping("/find-by-criteria")
+    public List<Promotion> findByCriteria(@RequestParam("id") long id) throws Exception{
+        return promotionService.findByCriteria(id);
     }
 }

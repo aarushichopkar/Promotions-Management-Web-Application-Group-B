@@ -7,6 +7,11 @@ import com.example.demo.quartz.Job.EmailJob;
 import com.example.demo.repository.PromotionRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
+import com.example.demo.enums.TargetAudienceCriteria;
+import com.example.demo.model.Promotion;
+import com.example.demo.model.TargetAudience;
+import com.example.demo.repository.PromotionRepo;
+import com.example.demo.repository.TargetAudienceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -122,6 +127,7 @@ public class PromotionService {
                 .build();
     }
 
+    TargetAudienceRepo targetAudienceRepo;
 
     public Promotion addPromotion(Promotion promotion) {
         promotion.setActive(false);
@@ -147,5 +153,19 @@ public class PromotionService {
         pro.setApplicableProducts(promotion.getApplicableProducts());
         promotionRepo.save(pro);
        return pro;
+    }
+
+    public List<Promotion> findByCriteria(long id) throws Exception{
+
+        Optional<TargetAudience> aud = targetAudienceRepo.findById(id);
+        if(aud.isEmpty()){
+            throw new Exception("no user found");
+        }
+
+        // get criteria of the user audience
+        TargetAudienceCriteria criteria = aud.get().getTargetAudienceCriteria();
+
+        // find list of all promotions for this criteria
+        return promotionRepo.findByTargetAudienceCriteria(criteria);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.enums.PaymentMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,12 +16,14 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @Entity
+@Builder
 public class UserBehaviour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
 //    LocalDate lastLoginDate;
-
+    LocalDate lastPurchaseDate;
     int purchaseFrequency;
+    PaymentMode paymentMode;
 }
