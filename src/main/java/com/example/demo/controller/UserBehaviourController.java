@@ -1,6 +1,6 @@
 //package com.example.demo.controller;
 //
-//import com.example.demo.model.UserBehaviour;
+//import com.example.demo.model.AudienceBehaviour;
 //import com.example.demo.service.UserBehaviourService;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@
 //
 //    @PostMapping("/add")
 //    public String addUserBehaviour(@RequestParam("audience_id") long audience_id,
-//                                          @RequestBody UserBehaviour userBehaviour) throws  Exception{
+//                                          @RequestBody AudienceBehaviour userBehaviour) throws  Exception{
 //        userBehaviourService.addUserBehaviour(audience_id, userBehaviour);
 //        return "User behaviour added";
 //    }

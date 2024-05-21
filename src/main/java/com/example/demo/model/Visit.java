@@ -5,32 +5,27 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
 @Entity
-public class Product {
-
+public class Visit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String name;
-    String description;
-    double price;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Visit> visits = new ArrayList<>();
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "promotion_id")
     @JsonIgnore
-    Promotion promotion;
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    private Integer visitorId;
+
+    private LocalDateTime visitTime;
+
+    // Constructors, getters, setters
 }

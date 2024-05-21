@@ -1,7 +1,7 @@
 //package com.example.demo.service;
 //
 //import com.example.demo.model.TargetAudience;
-//import com.example.demo.model.UserBehaviour;
+//import com.example.demo.model.AudienceBehaviour;
 //import com.example.demo.repository.TargetAudienceRepo;
 //import com.example.demo.repository.UserBehaviourRepo;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@
 //    @Autowired
 //    TargetAudienceRepo targetAudienceRepo;
 //
-//    public void addUserBehaviour(long audience_id, UserBehaviour userBehaviour) throws Exception{
+//    public void addUserBehaviour(long audience_id, AudienceBehaviour userBehaviour) throws Exception{
 //
 //        Optional<TargetAudience> optionalTargetAudience = targetAudienceRepo.findById(audience_id);
 //        if(optionalTargetAudience.isEmpty()){

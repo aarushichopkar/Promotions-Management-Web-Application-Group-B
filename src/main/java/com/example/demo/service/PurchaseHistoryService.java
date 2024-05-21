@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.enums.PaymentMode;
+import com.example.demo.model.AudienceBehaviour;
 import com.example.demo.model.Product;
 import com.example.demo.model.PurchaseHistory;
 import com.example.demo.model.TargetAudience;
-import com.example.demo.model.UserBehaviour;
 import com.example.demo.repository.ProductRepo;
 import com.example.demo.repository.PurchaseHistoryRepo;
 import com.example.demo.repository.TargetAudienceRepo;
@@ -50,18 +50,16 @@ public class PurchaseHistoryService {
         // user behaviour should be updated on every purchase
         // if user behaviour is null;
         if(targetAudience.getUserBehaviour() == null){
-            UserBehaviour userBehaviour = UserBehaviour.builder()
+            AudienceBehaviour userBehaviour = AudienceBehaviour.builder()
                     .lastPurchaseDate(purchaseHistory.getPurchaseDate())
-                    .paymentMode(purchaseHistory.getMode())
                     .build();
             targetAudience.setUserBehaviour(userBehaviour);
         }else{
             // update user behaviour
-            UserBehaviour userBehaviour = targetAudience.getUserBehaviour();
+            AudienceBehaviour audienceBehaviour = targetAudience.getUserBehaviour();
 
-            userBehaviour.setLastPurchaseDate(purchaseHistory.getPurchaseDate());
-            userBehaviour.setPaymentMode(purchaseHistory.getMode());
-//            targetAudience.setUserBehaviour(userBehaviour);
+            audienceBehaviour.setLastPurchaseDate(purchaseHistory.getPurchaseDate());
+//            targetAudience.setUserBehaviour(audienceBehaviour);
         }
         targetAudienceRepo.save(targetAudience);
     }
