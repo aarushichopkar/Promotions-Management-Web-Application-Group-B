@@ -1,13 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.enums.PaymentMode;
+import com.example.demo.model.AudienceBehaviour;
 import com.example.demo.model.Product;
 import com.example.demo.model.PurchaseHistory;
 import com.example.demo.model.TargetAudience;
 import com.example.demo.repository.ProductRepo;
 import com.example.demo.repository.PurchaseHistoryRepo;
 import com.example.demo.repository.TargetAudienceRepo;
-import com.example.demo.repository.AudienceBehaviourRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +24,8 @@ public class PurchaseHistoryService {
     ProductRepo productRepo;
     @Autowired
     TargetAudienceRepo targetAudienceRepo;
-    @Autowired
-    AudienceBehaviourRepo audienceBehaviourRepo;
+
+
 
     public void purchase(int productId, long audience_id, PaymentMode mode) throws Exception {
 
@@ -48,8 +48,10 @@ public class PurchaseHistoryService {
         targetAudience.setPurchaseHistory(l);
         purchaseHistoryRepo.save(purchaseHistory);
 
+
         // audience behaviour should be updated on every purchase
-        targetAudience.getAudienceBehaviour().setLastPurchaseDate(purchaseHistory.getPurchaseDate());
+        targetAudience.getUserBehaviour().setLastPurchaseDate(purchaseHistory.getPurchaseDate());
+
         targetAudienceRepo.save(targetAudience);
 
     }

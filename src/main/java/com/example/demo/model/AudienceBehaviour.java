@@ -21,8 +21,8 @@ public class AudienceBehaviour {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    //    LocalDate lastLoginDate;
+
+    LocalDate lastLoginDate;
     LocalDate lastPurchaseDate;
     int purchaseFrequency;
-//    PaymentMode paymentMode;
 }
