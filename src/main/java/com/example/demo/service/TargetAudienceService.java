@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.model.TargetAudience;
+import com.example.demo.model.*;
+import com.example.demo.model.AudienceBehaviour;
 import com.example.demo.repository.TargetAudienceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,8 @@ public class TargetAudienceService {
     TargetAudienceRepo targetAudienceRepo;
 
     public TargetAudience addAudience(TargetAudience targetAudience) {
+
+        targetAudience.setAudienceBehaviour(new AudienceBehaviour());
         return targetAudienceRepo.save(targetAudience);
     }
 }

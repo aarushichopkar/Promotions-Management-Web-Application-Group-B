@@ -4,14 +4,14 @@ import com.example.demo.enums.PaymentMode;
 import com.example.demo.model.Product;
 import com.example.demo.model.PurchaseHistory;
 import com.example.demo.model.TargetAudience;
-import com.example.demo.model.UserBehaviour;
 import com.example.demo.repository.ProductRepo;
 import com.example.demo.repository.PurchaseHistoryRepo;
 import com.example.demo.repository.TargetAudienceRepo;
-import com.example.demo.repository.UserBehaviourRepo;
+import com.example.demo.repository.AudienceBehaviourRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,7 +25,7 @@ public class PurchaseHistoryService {
     @Autowired
     TargetAudienceRepo targetAudienceRepo;
     @Autowired
-    UserBehaviourRepo userBehaviourRepo;
+    AudienceBehaviourRepo audienceBehaviourRepo;
 
     public void purchase(int productId, long audience_id, PaymentMode mode) throws Exception {
 
@@ -43,26 +43,14 @@ public class PurchaseHistoryService {
                 .build();
 
         // add to the purchase history list of target audience
-        targetAudience.getPurchaseHistory().add(purchaseHistory);
-
+        List<PurchaseHistory> l = targetAudience.getPurchaseHistory();
+        l.add(purchaseHistory);
+        targetAudience.setPurchaseHistory(l);
         purchaseHistoryRepo.save(purchaseHistory);
 
-        // user behaviour should be updated on every purchase
-        // if user behaviour is null;
-        if(targetAudience.getUserBehaviour() == null){
-            UserBehaviour userBehaviour = UserBehaviour.builder()
-                    .lastPurchaseDate(purchaseHistory.getPurchaseDate())
-                    .paymentMode(purchaseHistory.getMode())
-                    .build();
-            targetAudience.setUserBehaviour(userBehaviour);
-        }else{
-            // update user behaviour
-            UserBehaviour userBehaviour = targetAudience.getUserBehaviour();
-
-            userBehaviour.setLastPurchaseDate(purchaseHistory.getPurchaseDate());
-            userBehaviour.setPaymentMode(purchaseHistory.getMode());
-//            targetAudience.setUserBehaviour(userBehaviour);
-        }
+        // audience behaviour should be updated on every purchase
+        targetAudience.getAudienceBehaviour().setLastPurchaseDate(purchaseHistory.getPurchaseDate());
         targetAudienceRepo.save(targetAudience);
+
     }
 }
