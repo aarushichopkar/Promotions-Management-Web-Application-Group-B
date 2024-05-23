@@ -58,6 +58,25 @@ public class PromotionController {
        return promotionService.updatePromotion(promotion_id,promotion);
     }
 
+    @GetMapping("/get-total-revenue-generated")
+    public Double getTotalRevenue(){
+        return promotionService.getTotalRevenue();
+    }
+
+    // get revenue for each promotion
+    @GetMapping("/get-promotion-revenue")
+    public Double getPromotionRevenue(@RequestParam("promotion-id") long id) throws Exception{
+        return promotionService.getPromotionRevenue(id);
+    }
+
+
+    // get conversion rate for each promotion
+    @GetMapping("/get-customer-engagement")
+    public Double getCustomerEngagement(@RequestParam("promotion-id") long id) throws Exception{
+        return promotionService.getCustomerEngagement(id);
+    }
+
+
     // find promotions targeted for particular audience
     // taking audience id as input
     @GetMapping("/find-by-criteria")

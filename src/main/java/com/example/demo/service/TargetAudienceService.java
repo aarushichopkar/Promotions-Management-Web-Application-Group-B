@@ -14,7 +14,7 @@ public class TargetAudienceService {
 
     public TargetAudience addAudience(TargetAudience targetAudience) {
 
-        targetAudience.setAudienceBehaviour(new AudienceBehaviour());
+        targetAudience.setUserBehaviour(new AudienceBehaviour());
         return targetAudienceRepo.save(targetAudience);
     }
 }

@@ -50,7 +50,7 @@ public class PurchaseHistoryService {
 
 
         // audience behaviour should be updated on every purchase
-        targetAudience.getUserBehaviour().setLastPurchaseDate(purchaseHistory.getPurchaseDate());
+        targetAudience.getUserBehaviour().setLastPurchaseDate(purchaseHistory.getPurchaseTime());
 
         targetAudienceRepo.save(targetAudience);
 

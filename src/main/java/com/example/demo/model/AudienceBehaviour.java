@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -23,6 +24,6 @@ public class AudienceBehaviour {
 
 
     LocalDate lastLoginDate;
-    LocalDate lastPurchaseDate;
+    LocalDateTime lastPurchaseDate;
     int purchaseFrequency;
 }
