@@ -8,10 +8,10 @@ import com.example.demo.model.TargetAudience;
 import com.example.demo.repository.ProductRepo;
 import com.example.demo.repository.PurchaseHistoryRepo;
 import com.example.demo.repository.TargetAudienceRepo;
-import com.example.demo.repository.UserBehaviourRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,8 +24,8 @@ public class PurchaseHistoryService {
     ProductRepo productRepo;
     @Autowired
     TargetAudienceRepo targetAudienceRepo;
-    @Autowired
-    UserBehaviourRepo userBehaviourRepo;
+
+
 
     public void purchase(int productId, long audience_id, PaymentMode mode) throws Exception {
 
@@ -43,24 +43,16 @@ public class PurchaseHistoryService {
                 .build();
 
         // add to the purchase history list of target audience
-        targetAudience.getPurchaseHistory().add(purchaseHistory);
-
+        List<PurchaseHistory> l = targetAudience.getPurchaseHistory();
+        l.add(purchaseHistory);
+        targetAudience.setPurchaseHistory(l);
         purchaseHistoryRepo.save(purchaseHistory);
 
-        // user behaviour should be updated on every purchase
-        // if user behaviour is null;
-        if(targetAudience.getUserBehaviour() == null){
-            AudienceBehaviour userBehaviour = AudienceBehaviour.builder()
-                    .lastPurchaseDate(purchaseHistory.getPurchaseDate())
-                    .build();
-            targetAudience.setUserBehaviour(userBehaviour);
-        }else{
-            // update user behaviour
-            AudienceBehaviour audienceBehaviour = targetAudience.getUserBehaviour();
 
-            audienceBehaviour.setLastPurchaseDate(purchaseHistory.getPurchaseDate());
-//            targetAudience.setUserBehaviour(audienceBehaviour);
-        }
+        // audience behaviour should be updated on every purchase
+        targetAudience.getUserBehaviour().setLastPurchaseDate(purchaseHistory.getPurchaseTime());
+
         targetAudienceRepo.save(targetAudience);
+
     }
 }

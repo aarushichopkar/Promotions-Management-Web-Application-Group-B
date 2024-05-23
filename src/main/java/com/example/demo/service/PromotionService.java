@@ -2,14 +2,15 @@ package com.example.demo.service;
 
 import com.example.demo.dto.EmailRequest;
 import com.example.demo.dto.EmailResponse;
-import com.example.demo.model.Promotion;
+import com.example.demo.model.*;
 import com.example.demo.quartz.Job.EmailJob;
 import com.example.demo.repository.PromotionRepo;
+import com.example.demo.repository.PurchaseHistoryRepo;
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import com.example.demo.enums.TargetAudienceCriteria;
 import com.example.demo.model.Promotion;
-import com.example.demo.model.TargetAudience;
 import com.example.demo.repository.PromotionRepo;
 import com.example.demo.repository.TargetAudienceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.sound.midi.Track;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -39,6 +41,12 @@ public class PromotionService {
 
     @Autowired
     private Scheduler scheduler;
+
+    @Autowired
+    TargetAudienceRepo targetAudienceRepo;
+
+    @Autowired
+    PurchaseHistoryRepo purchaseHistoryRepo;
 
     // Scheduling and Email Services
     public String generate_email(Promotion promotion){
@@ -127,7 +135,7 @@ public class PromotionService {
                 .build();
     }
 
-    TargetAudienceRepo targetAudienceRepo;
+
 
     public Promotion addPromotion(Promotion promotion) {
         promotion.setActive(false);
@@ -167,5 +175,80 @@ public class PromotionService {
 
         // find list of all promotions for this criteria
         return promotionRepo.findByTargetAudienceCriteria(criteria);
+    }
+
+    public Double getTotalRevenue() {
+        double revenue = 0;
+
+        List<PurchaseHistory> purchaseHistories = purchaseHistoryRepo.findAll();
+        for(PurchaseHistory p: purchaseHistories){
+            double currentProductPrice = p.getProduct().getPrice();
+            revenue += currentProductPrice;
+        }
+        return revenue;
+    }
+
+    public Double getPromotionRevenue(long id) throws Exception{
+        double revenue = 0;
+
+        Optional<Promotion> optionalPromotion = promotionRepo.findById(id);
+        if(optionalPromotion.isEmpty()){
+            throw new Exception("invalid promotion id");
+        }
+
+        List<PurchaseHistory> purchaseHistories = purchaseHistoryRepo.findAll();
+        for(PurchaseHistory p: purchaseHistories){
+            Product product = p.getProduct();
+            long promotionId = product.getPromotion().getId();
+
+            if(promotionId == id){
+                revenue += product.getPrice();
+            }
+        }
+        return revenue;
+    }
+
+    public Double getCustomerEngagement(long id) throws Exception{
+        Optional<Promotion> optionalPromotion = promotionRepo.findById(id);
+        if(optionalPromotion.isEmpty()){
+            throw new Exception("invalid promotion id");
+        }
+        Promotion promotion = optionalPromotion.get();
+
+        // total visits for all products of this promotion
+        int totalVisits = 0;
+
+        List<Product> products = promotion.getApplicableProducts();
+        for(Product p: products){
+            List<Visit> visits = p.getVisits();
+            for(Visit v: visits){
+                LocalDateTime dt = v.getVisitTime();
+                LocalDateTime startTime = promotion.getStart_time();
+                LocalDateTime endTime = promotion.getEnd_time();
+
+                if(dt.isEqual(startTime) || dt.isAfter(startTime) || dt.isEqual(endTime) || dt.isBefore(endTime)){
+                    totalVisits++;
+                }
+            }
+        }
+
+        // total purchases for all products of this promotion
+        int totalPurchase = 0;
+        List<PurchaseHistory> purchaseHistories = purchaseHistoryRepo.findAll();
+        for(PurchaseHistory p: purchaseHistories){
+            Product product = p.getProduct();
+            if(product.getPromotion().getId() == id){
+                LocalDateTime dt = p.getPurchaseTime();
+                LocalDateTime startTime = promotion.getStart_time();
+                LocalDateTime endTime = promotion.getEnd_time();
+
+                if(dt.isEqual(startTime) || dt.isAfter(startTime) || dt.isEqual(endTime) || dt.isBefore(endTime)){
+                    totalPurchase++;
+                }
+            }
+        }
+
+        double rate = (totalPurchase/totalVisits)*100;
+        return rate;
     }
 }

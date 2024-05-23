@@ -30,6 +30,7 @@ public class TargetAudience {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userBehaviour_id")
+
     AudienceBehaviour userBehaviour;
 
     TargetAudienceCriteria targetAudienceCriteria;
