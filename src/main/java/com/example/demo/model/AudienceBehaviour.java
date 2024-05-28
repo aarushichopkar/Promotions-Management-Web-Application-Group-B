@@ -8,19 +8,22 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@NoArgsConstructor
 @AllArgsConstructor
-@Setter
+@NoArgsConstructor
 @Getter
+@Setter
 @Entity
-public class UserBehaviour {
+@Builder
+public class AudienceBehaviour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-//    LocalDate lastLoginDate;
 
+    LocalDate lastLoginDate;
+    LocalDateTime lastPurchaseDate;
     int purchaseFrequency;
 }

@@ -20,6 +20,7 @@ public class Demographics {
     long id;
 
     int age;
-
     Gender gender;
+    String region;
+    String Occupation;
 }

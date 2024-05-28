@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Visit;
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/product")
@@ -22,5 +25,12 @@ public class ProductController {
                                               @RequestBody Product product) throws Exception {
         Product savedProduct = productService.addProduct(promotion_id, product);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/audienceVisit")
+    public ResponseEntity<?> addvisit(@RequestParam("product_id") int product_id,
+                                      @RequestBody Visit v) throws Exception{
+        Product SavedProduct = productService.addvisit(product_id,v);
+        return new ResponseEntity<>(SavedProduct, HttpStatus.CREATED);
     }
 }
