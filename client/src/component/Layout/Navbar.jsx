@@ -102,6 +102,11 @@ export default function Navbar() {
     navigate("/signin");
   };
 
+  const handleMenuProfile = (event) => {
+    dispatch(logout());
+    navigate("/profile");
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -119,7 +124,7 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuProfile}>Profile</MenuItem>
       <MenuItem onClick={handleMenuLogout}>Logout</MenuItem>
     </Menu>
   );

@@ -138,7 +138,7 @@ const columns = [
           style={{ marginLeft: 16 }}
           // onClick={() => handleAddRow(params.row.id)}
         >
-          Schedule
+          Edit
         </Button>
         <Button
           variant="contained"

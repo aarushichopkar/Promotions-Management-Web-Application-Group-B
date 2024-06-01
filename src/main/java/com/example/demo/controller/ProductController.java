@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Promotion;
 import com.example.demo.model.Visit;
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/product")
@@ -33,4 +35,10 @@ public class ProductController {
         Product SavedProduct = productService.addvisit(product_id,v);
         return new ResponseEntity<>(SavedProduct, HttpStatus.CREATED);
     }
+
+    @GetMapping("/getProducts")
+    public List<Product> get_Products(){
+        return (List<Product>) productService.get_Products();
+    }
+
 }

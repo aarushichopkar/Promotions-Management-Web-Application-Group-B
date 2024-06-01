@@ -10,13 +10,14 @@ import React, { useEffect, useState } from 'react';
 function Profile() {
   // const userRole = localStorage.getItem('token');
   
-  const [userRole, setUserRole] = useState(null);
-  useEffect(() => {
-    const role = localStorage.getItem('role');
-    setUserRole(role);
+  // const [userRole, setUserRole] = useState(null);
+  // useEffect(() => {
+  //   const auth = localStorage.getItem('auth');
     
-  console.log(role);
-  }, []);
+  //   // setUserRole(role);
+    
+  // console.log(auth.role);
+  // }, []);
 
 
   return (
@@ -37,7 +38,7 @@ function Profile() {
                   Email: {"aarushi@gmail.com"}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Role: {userRole || 'Manager'}
+                  {/* Role: {role || 'Manager'} */}
                 </Typography>
               </CardContent>
             </Card>
