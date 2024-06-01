@@ -195,20 +195,26 @@ public class PromotionService {
         if(optionalPromotion.isEmpty()){
             throw new Exception("invalid promotion id");
         }
-
+        Promotion promotion = optionalPromotion.get();
         List<PurchaseHistory> purchaseHistories = purchaseHistoryRepo.findAll();
         for(PurchaseHistory p: purchaseHistories){
             Product product = p.getProduct();
             long promotionId = product.getPromotion().getId();
 
             if(promotionId == id){
-                revenue += product.getPrice();
+                LocalDateTime dt = p.getPurchaseTime();
+                LocalDateTime startTime = promotion.getStart_time();
+                LocalDateTime endTime = promotion.getEnd_time();
+
+                if(dt.isEqual(startTime) || dt.isAfter(startTime) || dt.isEqual(endTime) || dt.isBefore(endTime)){
+                    revenue += product.getPrice();
+                }
             }
         }
         return revenue;
     }
 
-    public Double getCustomerEngagement(long id) throws Exception{
+    public Integer getCustomerEngagement(long id) throws Exception{
         Optional<Promotion> optionalPromotion = promotionRepo.findById(id);
         if(optionalPromotion.isEmpty()){
             throw new Exception("invalid promotion id");
@@ -231,6 +237,16 @@ public class PromotionService {
                 }
             }
         }
+        return totalVisits;
+    }
+
+    public Double getConversionRate(long id) throws Exception{
+
+        Optional<Promotion> optionalPromotion = promotionRepo.findById(id);
+        if(optionalPromotion.isEmpty()){
+            throw new Exception("invalid promotion id");
+        }
+        Promotion promotion = optionalPromotion.get();
 
         // total purchases for all products of this promotion
         int totalPurchase = 0;
@@ -247,8 +263,8 @@ public class PromotionService {
                 }
             }
         }
+       int totalVisits = getCustomerEngagement(id);
 
-        double rate = (totalPurchase/totalVisits)*100;
-        return rate;
+        return ((double) totalPurchase /totalVisits)*100;
     }
 }

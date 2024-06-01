@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/promotion")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PromotionController {
 
     private final PromotionService promotionService;
@@ -72,7 +73,7 @@ public class PromotionController {
 
     // get conversion rate for each promotion
     @GetMapping("/get-customer-engagement")
-    public Double getCustomerEngagement(@RequestParam("promotion-id") long id) throws Exception{
+    public Integer getCustomerEngagement(@RequestParam("promotion-id") long id) throws Exception{
         return promotionService.getCustomerEngagement(id);
     }
 
@@ -83,4 +84,10 @@ public class PromotionController {
     public List<Promotion> findByCriteria(@RequestParam("id") long id) throws Exception{
         return promotionService.findByCriteria(id);
     }
+
+    @GetMapping("get-conversion-rate")
+    public Double getConversionRate(@RequestParam("promotion-id") long id) throws Exception{
+        return promotionService.getConversionRate(id);
+    }
+
 }
