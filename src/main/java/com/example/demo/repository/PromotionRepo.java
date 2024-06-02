@@ -11,4 +11,6 @@ import java.util.List;
 public interface PromotionRepo extends JpaRepository<Promotion, Long> {
 
     List<Promotion> findByTargetAudienceCriteria(TargetAudienceCriteria criteria);
+
+    List<Promotion> findByManagerId(long managerId);
 }
