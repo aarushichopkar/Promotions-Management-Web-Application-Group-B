@@ -120,7 +120,7 @@ import { showPromotion } from '../../Store/promotionSlice';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
-  { field: 'manager_id', headerName: 'Manager ID', width: 90 },
+  { field: 'managerId', headerName: 'Manager ID', width: 90 },
   { field: 'promotionType', headerName: 'Promotion Type', width: 150 },
   { field: 'creation_time', headerName: 'Creation Time', width: 150 },
   { field: 'start_time', headerName: 'Start Time', width: 200 },

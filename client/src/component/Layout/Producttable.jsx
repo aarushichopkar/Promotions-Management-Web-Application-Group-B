@@ -3,54 +3,53 @@ import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from "react-redux";
-import { showPromotion } from '../../Store/promotionSlice';
-import { showPromotion } from '../../Store/promotionSlice';
+import { showProduct } from '../../Store/productSlice';
+// import { showPromotion } from '../../Store/promotionSlice';
+// import { showPromotion } from '../../Store/promotionSlice';
+
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
-  { field: 'productName', headerName: 'Product Name', width: 90 },
+  { field: 'name', headerName: 'Product Name', width: 150 },
+  { field: 'price', headerName: 'Price', width: 90},
+//   { field: 'promotionId', headerName: 'Promotion Id', width: 120},
 
-  {
-    field: 'actions',
-    headerName: 'Actions',
-    width: 230,
-    renderCell: (params) => (
-      <strong>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          style={{ marginLeft: 16 }}
-          // onClick={() => handleAddRow(params.row.id)}
-        >
-          Schedule
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          size="small"
-          sx={{ marginLeft: 2, backgroundColor: 'red', color: 'white', '&:hover': { backgroundColor: 'darkred' } }}
-          // onClick={() => handleDeleteRow(params.row.id)}
-        >
-          Delete
-        </Button>
-      </strong>
-    ),
-  },
+//   {
+//     field: 'actions',
+//     headerName: 'Actions',
+//     width: 230,
+//     renderCell: (params) => (
+//       <strong>
+//         <Button
+//           variant="contained"
+//           color="secondary"
+//           size="small"
+//           sx={{ marginLeft: 2, backgroundColor: 'red', color: 'white', '&:hover': { backgroundColor: 'darkred' } }}
+//           // onClick={() => handleDeleteRow(params.row.id)}
+//         >
+//           Delete
+//         </Button>
+//       </strong>
+//     ),
+//   },
 ];
 
-export default function Promotiontable() {
+export default function Producttable() {
   const dispatch = useDispatch();
-  const { promotion, loading } = useSelector((state) => state.promotion);
+  const { product, loading } = useSelector((state) => state.product);
 
   useEffect(() => {
-    dispatch(showPromotion());
+    dispatch(showProduct());
   }, [dispatch]);
+
+  if (loading) {
+      return <h2>Loading</h2>;
+  }
 
   return (
     <Box sx={{ height: 500, width: '100%' }}>
       <DataGrid
-        rows={promotion}  // Use the promotion data from the Redux store
+        rows={product}  // Using the product data from the Redux store
         columns={columns}
         initialState={{
           pagination: {
