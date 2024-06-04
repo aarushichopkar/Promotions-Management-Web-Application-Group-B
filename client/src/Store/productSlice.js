@@ -30,6 +30,26 @@ export const removeProduct = createAsyncThunk(
   }
 );
 
+export const addNewProduct = createAsyncThunk(
+  "addProduct",
+  async (product, { rejectWithValue }) => {
+  try{
+    const response = await axiosInstance.post("/product/add?promotion_id=" + product.proId, product, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+    console.log("add product response:", response);
+    if(!response.status === 200) {
+      throw new Error('failed to add product');
+    }
+
+  } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const product = createSlice({
   name: "product",
   initialState: {
