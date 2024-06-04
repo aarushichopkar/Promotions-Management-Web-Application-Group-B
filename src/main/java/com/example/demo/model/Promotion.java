@@ -25,7 +25,7 @@ public class Promotion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    long manager_id;
+    long managerId;
 
     long Owner_id;
 

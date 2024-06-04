@@ -8,9 +8,8 @@ import com.example.demo.repository.PromotionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,6 +31,8 @@ public class ProductService {
         }
 
         Promotion foundPromotion = optionalPromotion.get();
+
+        product.setProId(promotion_id);
 
         //add product to the list of products in promotion
         foundPromotion.getApplicableProducts().add(product);
@@ -63,5 +64,29 @@ public class ProductService {
         Product savedProduct = productRepo.save(product);
 
         return savedProduct;
+    }
+
+    public List<Product> get_Products() {
+        return (java.util.List<com.example.demo.model.Product>) productRepo.findAll();
+    }
+
+    public void deleteProduct(int id) throws Exception{
+        Optional<Product> optionalProduct = productRepo.findById(id);
+        if(optionalProduct.isEmpty()){
+            throw new Exception("product not found");
+        }
+
+        // deleting from promotion products list
+        List<Product> products = optionalProduct.get().getPromotion().getApplicableProducts();
+        Iterator<Product> iterator = products.iterator();
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+            if (product.getId() == id) {
+                iterator.remove();
+                break;
+            }
+        }
+
+        productRepo.deleteById(id);
     }
 }
