@@ -14,6 +14,21 @@ export const showProduct = createAsyncThunk(
   }
 );
 
+export const removeProduct = createAsyncThunk(
+  "removeProduct",
+  async (productId, { rejectWithValue }) => {
+  try {
+        const response = await axiosInstance.delete("http://localhost:9092/product/deleteProduct?product_id=" + productId);
+        console.log("Remove Product Response:", response);
+        if (!response.status === 200) {
+          throw new Error('Failed to delete product');
+        }
+        return productId;
+      } catch (error) {
+        return rejectWithValue(error.response.data);
+      }
+  }
+);
 
 export const product = createSlice({
   name: "product",
@@ -51,9 +66,21 @@ export const product = createSlice({
         state.error = action.payload;
 //        state.product = action.payload;
       })
+
+      .addCase(removeProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(removeProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.product = state.product.filter(product => product.id !== action.payload);
+      })
+      .addCase(removeProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
   }
 });
 
 export default product.reducer;
 
-export const { searchUser } = product.actions;
+export const { searchUser} = product.actions;

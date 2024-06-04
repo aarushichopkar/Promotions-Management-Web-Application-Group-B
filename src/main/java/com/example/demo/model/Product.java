@@ -33,4 +33,6 @@ public class Product {
     @JoinColumn(name = "promotion_id")
     @JsonIgnore
     Promotion promotion;
+
+    long proId;
 }

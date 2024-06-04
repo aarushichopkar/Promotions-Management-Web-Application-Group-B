@@ -4,38 +4,14 @@ import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from "react-redux";
 import { showProduct } from '../../Store/productSlice';
+import { removeProduct } from '../../Store/productSlice';
 // import { showPromotion } from '../../Store/promotionSlice';
 // import { showPromotion } from '../../Store/promotionSlice';
 
-
-const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
-  { field: 'name', headerName: 'Product Name', width: 150 },
-  { field: 'price', headerName: 'Price', width: 90},
-//   { field: 'promotionId', headerName: 'Promotion Id', width: 120},
-
-//   {
-//     field: 'actions',
-//     headerName: 'Actions',
-//     width: 230,
-//     renderCell: (params) => (
-//       <strong>
-//         <Button
-//           variant="contained"
-//           color="secondary"
-//           size="small"
-//           sx={{ marginLeft: 2, backgroundColor: 'red', color: 'white', '&:hover': { backgroundColor: 'darkred' } }}
-//           // onClick={() => handleDeleteRow(params.row.id)}
-//         >
-//           Delete
-//         </Button>
-//       </strong>
-//     ),
-//   },
-];
 
 export default function Producttable() {
   const dispatch = useDispatch();
+
   const { product, loading } = useSelector((state) => state.product);
 
   useEffect(() => {
@@ -45,6 +21,37 @@ export default function Producttable() {
   if (loading) {
       return <h2>Loading</h2>;
   }
+
+  const deleteProduct = (id) => {
+    console.log("Delete Product ID:", id);
+    dispatch(removeProduct(id));
+  }
+
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'name', headerName: 'Product Name', width: 150 },
+    { field: 'price', headerName: 'Price', width: 90},
+    { field: 'proId', headerName: 'Promotion Id', width: 120},
+
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 230,
+      renderCell: (params) => (
+        <strong>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            sx={{ marginLeft: 2, backgroundColor: 'red', color: 'white', '&:hover': { backgroundColor: 'darkred' } }}
+            onClick={() => deleteProduct(params.row.id)}
+          >
+            Delete
+          </Button>
+        </strong>
+      ),
+    },
+  ];
 
   return (
     <Box sx={{ height: 500, width: '100%' }}>
@@ -65,3 +72,4 @@ export default function Producttable() {
     </Box>
   );
 }
+

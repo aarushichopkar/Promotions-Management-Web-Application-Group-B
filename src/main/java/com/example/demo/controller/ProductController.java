@@ -43,4 +43,10 @@ public class ProductController {
         return (List<Product>) productService.get_Products();
     }
 
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @DeleteMapping("/deleteProduct")
+    public void deleteProduct(@RequestParam("product_id") int id) throws Exception{
+        productService.deleteProduct(id);
+    }
 }
