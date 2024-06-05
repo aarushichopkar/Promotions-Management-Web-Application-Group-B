@@ -22,11 +22,10 @@ export const addNewPromotion = createAsyncThunk(
 
 //read action
 export const showPromotion = createAsyncThunk(
-  "showPromotion",
+  "promotion/showPromotion",
   async (args, { rejectWithValue }) => {
-    const response = await axiosInstance.get("promotion/find-all");
-    // console.log(response);
     try {
+      const response = await axiosInstance.get("promotion/find-all");
       return response.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -61,42 +60,7 @@ export const removePromotion = createAsyncThunk(
 //       { method: "DELETE" }
 //     );
 
-//     try {
-//       const result = await response.json();
-//       console.log(result);
-//       return result;
-//     } catch (error) {
-//       return rejectWithValue(error);
-//     }
-//   }
-// );
-
-//update action
-// export const updateUser = createAsyncThunk(
-//   "updateUser",
-//   async (data, { rejectWithValue }) => {
-//     console.log("updated data", data);
-//     const response = await fetch(
-//       `https://641dd63d945125fff3d75742.mockapi.io/crud/${data.id}`,
-//       {
-//         method: "PUT",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(data),
-//       }
-//     );
-
-//     try {
-//       const result = await response.json();
-//       return result;
-//     } catch (error) {
-//       return rejectWithValue(error);
-//     }
-//   }
-// );
-
-export const userPromotion = createSlice({
+const userPromotion = createSlice({
   name: "userPromotion",
   initialState: {
     promotion: [],
@@ -104,24 +68,17 @@ export const userPromotion = createSlice({
     error: null,
     searchData: [],
   },
-
   reducers: {
     searchUser: (state, action) => {
-      console.log(action.payload);
       state.searchData = action.payload;
     },
   },
-
   extraReducers: (builder) => {
     builder
       .addCase(showPromotion.pending, (state) => {
         state.loading = true;
       })
-      .addCase(showPromotion.fulfilled, (state, action ) => {
-        state.loading = false;
-      state.promotion = action.payload;
-      })
-      .addCase(showPromotion.rejected, (state, action) => {
+      .addCase(showPromotion.fulfilled, (state, action) => {
         state.loading = false;
         state.promotion = action.payload;
       })
@@ -191,7 +148,6 @@ export const userPromotion = createSlice({
   //   },
   // },
 }});
-
 export default userPromotion.reducer;
 
 export const { searchUser } = userPromotion.actions;
