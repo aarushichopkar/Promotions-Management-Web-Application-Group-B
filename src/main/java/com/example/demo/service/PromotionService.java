@@ -269,5 +269,9 @@ public class PromotionService {
         return ((double) totalPurchase /totalVisits)*100;
     }
 
+    public void deletePromotion(long id) throws Exception {
+             promotionRepo.deleteById(id);
+    }
+
 
 }

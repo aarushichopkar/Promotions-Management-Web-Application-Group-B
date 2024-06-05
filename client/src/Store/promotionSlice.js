@@ -1,29 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from '../component/utils/axiosinstance'
-//create action
-// export const createUser = createAsyncThunk(
-//   "createUser",
-//   async (data, { rejectWithValue }) => {
-//     console.log("data", data);
-//     const response = await fetch(
-//       "https://641dd63d945125fff3d75742.mockapi.io/crud",
-//       {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(data),
-//       }
-//     );
 
-//     try {
-//       const result = await response.json();
-//       return result;
-//     } catch (error) {
-//       return rejectWithValue(error);
-//     }
-//   }
-// );
+
+export const addNewPromotion = createAsyncThunk(
+  "addPromotion",
+  async (newpromotion, { rejectWithValue }) => {
+    console.log(newpromotion);
+  try{
+    console.log(newpromotion);
+    const response = await axiosInstance.post("promotion/add", newpromotion);
+    console.log("add product response:", response);
+    if(!response.status === 200) {
+      throw new Error('failed to add product');
+    }
+
+  } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 //read action
 export const showPromotion = createAsyncThunk(
@@ -38,6 +33,25 @@ export const showPromotion = createAsyncThunk(
     }
   }
 );
+
+
+export const removePromotion = createAsyncThunk(
+  "removePromotion",
+  async (promotionId, { rejectWithValue }) => {
+  try {
+      console.log(promotionId);
+        const response = await axiosInstance.delete("promotion?promotion_id=" + promotionId);
+        console.log("Remove Product Response:", response);
+        if (!response.status === 200) {
+          throw new Error('Failed to delete product');
+        }
+        return promotionId;
+      } catch (error) {
+        return rejectWithValue(error.response.data);
+      }
+  }
+);
+
 //delete action
 // export const deleteUser = createAsyncThunk(
 //   "deleteUser",
@@ -110,6 +124,17 @@ export const userPromotion = createSlice({
       .addCase(showPromotion.rejected, (state, action) => {
         state.loading = false;
         state.promotion = action.payload;
+      })
+      .addCase(removePromotion.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(removePromotion.fulfilled, (state, action) => {
+        state.loading = false;
+        state.promotion = state.promotion.filter(promotion => promotion.id !== action.payload);
+      })
+      .addCase(removePromotion.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       })
   
   // {

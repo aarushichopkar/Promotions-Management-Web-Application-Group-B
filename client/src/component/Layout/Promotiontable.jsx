@@ -116,47 +116,43 @@ import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from "react-redux";
-import { showPromotion } from '../../Store/promotionSlice';
+import { showPromotion, removePromotion } from '../../Store/promotionSlice';
 
-const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
-  { field: 'managerId', headerName: 'Manager ID', width: 90 },
-  { field: 'promotionType', headerName: 'Promotion Type', width: 150 },
-  { field: 'creation_time', headerName: 'Creation Time', width: 150 },
-  { field: 'start_time', headerName: 'Start Time', width: 200 },
-  { field: 'end_time', headerName: 'End Time', width: 200 },
-  {
-    field: 'actions',
-    headerName: 'Actions',
-    width: 230,
-    renderCell: (params) => (
-      <strong>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          style={{ marginLeft: 16 }}
-          // onClick={() => handleAddRow(params.row.id)}
-        >
-          Edit
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          size="small"
-          sx={{ marginLeft: 2, backgroundColor: 'red', color: 'white', '&:hover': { backgroundColor: 'darkred' } }}
-          // onClick={() => handleDeleteRow(params.row.id)}
-        >
-          Delete
-        </Button>
-      </strong>
-    ),
-  },
-];
 
 export default function Promotiontable() {
   const dispatch = useDispatch();
   const { promotion, loading } = useSelector((state) => state.promotion);
+  
+  const handleDeleteRow = (id) => {
+    dispatch(removePromotion(id));
+  };
+  
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'managerId', headerName: 'Manager ID', width: 90 },
+    { field: 'promotionType', headerName: 'Promotion Type', width: 150 },
+    { field: 'creation_time', headerName: 'Creation Time', width: 150 },
+    { field: 'start_time', headerName: 'Start Time', width: 200 },
+    { field: 'end_time', headerName: 'End Time', width: 200 },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 230,
+      renderCell: (params) => (
+        <strong>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            sx={{ backgroundColor: 'red', color: 'white', '&:hover': { backgroundColor: 'darkred' } }}
+            onClick={() => handleDeleteRow(params.row.id)}
+          >
+            Delete
+          </Button>
+        </strong>
+      ),
+    },
+  ];
 
   useEffect(() => {
     dispatch(showPromotion());

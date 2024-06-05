@@ -18,7 +18,7 @@ export const removeProduct = createAsyncThunk(
   "removeProduct",
   async (productId, { rejectWithValue }) => {
   try {
-        const response = await axiosInstance.delete("http://localhost:9092/product/deleteProduct?product_id=" + productId);
+        const response = await axiosInstance.delete("product/deleteProduct?product_id=" + productId);
         console.log("Remove Product Response:", response);
         if (!response.status === 200) {
           throw new Error('Failed to delete product');
@@ -74,10 +74,6 @@ export const product = createSlice({
       .addCase(showProduct.fulfilled, (state, action ) => {
         state.loading = false;
         state.product = action.payload;
-//        state.product = action.payload.map(product => ({
-//                  ...product,
-//                  promotionId: product.promotion ? product.promotion.id : null
-//                }));
 
       })
       .addCase(showProduct.rejected, (state, action) => {

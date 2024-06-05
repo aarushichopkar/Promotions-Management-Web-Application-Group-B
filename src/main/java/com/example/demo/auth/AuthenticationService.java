@@ -33,6 +33,7 @@ public class AuthenticationService {
                     .id(savedUser.getId())
                     .role(String.valueOf(savedUser.getRole()))
                     .token(jwtToken)
+                    .email(savedUser.getEmail())
                     .build();
         };
 
@@ -51,7 +52,8 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .role(String.valueOf(user.getRole()))
                 .token(jwtToken)
-                .token(jwtToken)
+                .email(user.getEmail())
+                .id(user.getId())
                 .build();
     }
 //

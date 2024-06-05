@@ -212,7 +212,15 @@ export default function Navbar() {
               color="inherit"
             >
               <Badge>
-                <AddIcon onClick={() =>{navigate('/addpromotion');}}/>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                style={{ marginLeft: 16 }}
+                onClick={() =>{navigate('/addpromotion')}}
+                >
+                  Add promotion
+                </Button>
               </Badge>
             </IconButton>
 
