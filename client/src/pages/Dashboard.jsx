@@ -11,16 +11,12 @@ import "../Dash.css";
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import { useDispatch, useSelector } from 'react-redux';
 import { showPromotion, getTotalRev } from '../Store/promotionSlice';
-import RevenueBarChart from '../component/Layout/RevenueBarChart';
+// import RevenueBarChart from '../component/Layout/RevenueBarChart';
 
 function Home() {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
 
-  // Log the state to debug
-  console.log('Complete state:', state);
-
-  const { promotion, loading, totalRev } = useSelector((state) => state.userPromotion);
+  const { promotion, loading, totalRev } = useSelector((state) => state.promotion);
 
   useEffect(() => {
     dispatch(showPromotion());
@@ -81,33 +77,43 @@ function Home() {
             <Grid item xs={8}>
               <Card sx={{ height: "60vh" }}>
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    Analytics
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus, molestias. Nulla perspiciatis eligendi asperiores ea vero, expedita ut itaque earum.
-                  </Typography>
-                  <Card sx={{ mt: 2 }}>
-                    <CardContent>
-                      {loading ? "Loading..." : promotion.map((promo) => (
-                        <Card key={promo.id} sx={{ mb: 2 }}>
-                          <CardContent>
-                            <Typography variant="body2" color="text.secondary">
-                              Promotion ID: {promo.id}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Promotion Type: {promo.promotionType}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      ))}
+                <Typography gutterBottom variant="h5" component="div">
+          Analytics
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus, molestias. Nulla perspiciatis eligendi asperiores ea vero, expedita ut itaque earum qui deleniti at aliquam nobis minima est? Natus, animi ipsa?
+        </Typography>
+      </CardContent>
+    </Card>
+        </Grid>
+        <Grid item xs={4}>
+          <Card sx={{ height: 60 + "vh" }}>
+      <CardContent>
+      <Typography gutterBottom variant="h5" component="div">
+          Active Promotions
+        </Typography>
+
+        <Card sx={{ maxWidth: 350 }}>
+      <CardContent>
+      {promotion.map(promo => (
+                <Card key={promo.id} sx={{ mb: 2 }}>
+                  <CardContent>
+                    <Typography variant="body2" color="text.secondary">
+                      Promotion ID: {promo.id}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Promotion Type: {promo.promotionType}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))}
                     </CardContent>
                   </Card>
                 </CardContent>
               </Card>
             </Grid>
           </Grid>
-          <RevenueBarChart />
+          {/* <RevenueBarChart /> */}
         </Box>
       </Box>
     </>
