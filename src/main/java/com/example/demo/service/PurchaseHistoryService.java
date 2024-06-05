@@ -1,12 +1,17 @@
 package com.example.demo.service;
 
+import com.example.demo.enums.PaymentMode;
+import com.example.demo.model.AudienceBehaviour;
 import com.example.demo.model.Product;
 import com.example.demo.model.PurchaseHistory;
+import com.example.demo.model.TargetAudience;
 import com.example.demo.repository.ProductRepo;
 import com.example.demo.repository.PurchaseHistoryRepo;
+import com.example.demo.repository.TargetAudienceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,18 +19,40 @@ public class PurchaseHistoryService {
 
     @Autowired
     PurchaseHistoryRepo purchaseHistoryRepo;
-    ProductRepo productRepo;
 
-    public void purchase(int productId) throws Exception {
-        Product product;
-        try{
-            product = productRepo.findById(productId).get();
-        } catch(Exception e){
-            throw new Exception("product not found");
+    @Autowired
+    ProductRepo productRepo;
+    @Autowired
+    TargetAudienceRepo targetAudienceRepo;
+
+
+
+    public void purchase(int productId, long audience_id, PaymentMode mode) throws Exception {
+
+        Optional<Product> optionalProduct = productRepo.findById(productId);
+        Optional<TargetAudience> optionalTargetAudience = targetAudienceRepo.findById(audience_id);
+        if(optionalProduct.isEmpty() || optionalTargetAudience.isEmpty()){
+            throw new Exception("invalid input parameters");
         }
+        Product product = optionalProduct.get();
+        TargetAudience targetAudience = optionalTargetAudience.get();
+
         PurchaseHistory purchaseHistory = PurchaseHistory.builder()
                 .product(product)
+                .mode(mode)
                 .build();
+
+        // add to the purchase history list of target audience
+        List<PurchaseHistory> l = targetAudience.getPurchaseHistory();
+        l.add(purchaseHistory);
+        targetAudience.setPurchaseHistory(l);
         purchaseHistoryRepo.save(purchaseHistory);
+
+
+        // audience behaviour should be updated on every purchase
+        targetAudience.getUserBehaviour().setLastPurchaseDate(purchaseHistory.getPurchaseTime());
+
+        targetAudienceRepo.save(targetAudience);
+
     }
 }
