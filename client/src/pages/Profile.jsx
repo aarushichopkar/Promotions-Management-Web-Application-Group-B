@@ -8,16 +8,6 @@ import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 
 function Profile() {
-  // const userRole = localStorage.getItem('token');
-  
-  // const [userRole, setUserRole] = useState(null);
-  // useEffect(() => {
-  //   const auth = localStorage.getItem('auth');
-    
-  //   // setUserRole(role);
-    
-  // console.log(auth.role);
-  // }, []);
 
 
   return (
