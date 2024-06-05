@@ -5,6 +5,7 @@ import { styled } from '@mui/system';
 import MultipleSelect from '../component/Layout/MultipleSelectPro'; // Import the MultipleSelect component
 import { useDispatch, useSelector } from "react-redux";
 import { addNewProduct } from '../Store/productSlice';
+import { useNavigate } from 'react-router-dom';
 
 const StyledBox = styled(Box)({
   maxWidth: '500px',
@@ -32,7 +33,7 @@ const FormComponent = () => {
     };
 
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
    const addProduct = (product) => {
      console.log("product data: ", product);
      dispatch(addNewProduct(product));
@@ -98,6 +99,22 @@ const FormComponent = () => {
             onClick={() => addProduct(product)}
           >
             Add
+          </Button>
+          <Button
+            color="secondary"
+            variant="contained"
+            fullWidth
+            sx={{
+              padding: '0.75rem',
+              fontSize: '1rem',
+              backgroundColor: 'grey',
+              '&:hover': {
+                backgroundColor: '#9a0007',
+              },
+            }}
+            onClick={() => navigate(-1)} // Navigate back to the previous page
+          >
+            Back
           </Button>
         </Stack>
       </form>

@@ -10,21 +10,15 @@ import Stack from '@mui/material/Stack';
 import "../Dash.css";
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import { useDispatch, useSelector } from 'react-redux';
-import { showPromotion, getTotalRev } from '../Store/promotionSlice';
-import RevenueBarChart from '../component/Layout/RevenueBarChart';
+import { showPromotion } from '../Store/promotionSlice';
 
 function Home() {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
 
-  // Log the state to debug
-  console.log('Complete state:', state);
-
-  const { promotion, loading, totalRev } = useSelector((state) => state.userPromotion);
+  const { promotion, loading } = useSelector((state) => state.promotion);
 
   useEffect(() => {
     dispatch(showPromotion());
-    dispatch(getTotalRev());
   }, [dispatch]);
 
   return (
@@ -66,10 +60,6 @@ function Home() {
                   <CardContent>
                     <Stack spacing={2} direction="row">
                       <StorefrontIcon />
-                      <div className="paddingall">
-                        <span className="pricetitle">{totalRev ? `Rs ${totalRev.toFixed(2)}` : "Loading..."}</span><br />
-                        <span className="pricesubtitle">Total Income</span>
-                      </div>
                     </Stack>
                   </CardContent>
                 </Card>
@@ -107,7 +97,6 @@ function Home() {
               </Card>
             </Grid>
           </Grid>
-          <RevenueBarChart />
         </Box>
       </Box>
     </>
