@@ -1,171 +1,95 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from '../component/utils/axiosinstance'
-//create action
-// export const createUser = createAsyncThunk(
-//   "createUser",
-//   async (data, { rejectWithValue }) => {
-//     console.log("data", data);
-//     const response = await fetch(
-//       "https://641dd63d945125fff3d75742.mockapi.io/crud",
-//       {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(data),
-//       }
-//     );
+import axiosInstance from '../component/utils/axiosinstance';
 
-//     try {
-//       const result = await response.json();
-//       return result;
-//     } catch (error) {
-//       return rejectWithValue(error);
-//     }
-//   }
-// );
-
-//read action
+// Thunks
 export const showPromotion = createAsyncThunk(
-  "showPromotion",
+  "promotion/showPromotion",
   async (args, { rejectWithValue }) => {
-    const response = await axiosInstance.get("promotion/find-all");
-    // console.log(response);
     try {
+      const response = await axiosInstance.get("promotion/find-all");
       return response.data;
     } catch (error) {
       return rejectWithValue(error);
     }
   }
 );
-//delete action
-// export const deleteUser = createAsyncThunk(
-//   "deleteUser",
-//   async (id, { rejectWithValue }) => {
-//     const response = await fetch(
-//       `https://641dd63d945125fff3d75742.mockapi.io/crud/${id}`,
-//       { method: "DELETE" }
-//     );
 
-//     try {
-//       const result = await response.json();
-//       console.log(result);
-//       return result;
-//     } catch (error) {
-//       return rejectWithValue(error);
-//     }
-//   }
-// );
+export const getTotalRev = createAsyncThunk(
+  "promotion/getTotalRev",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get("promotion/get-total-revenue-generated");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 
-//update action
-// export const updateUser = createAsyncThunk(
-//   "updateUser",
-//   async (data, { rejectWithValue }) => {
-//     console.log("updated data", data);
-//     const response = await fetch(
-//       `https://641dd63d945125fff3d75742.mockapi.io/crud/${data.id}`,
-//       {
-//         method: "PUT",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(data),
-//       }
-//     );
+export const getRevenueByPromotionId = createAsyncThunk(
+  "getRevenueByPromotionId",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(`promotion/get-revenue/${id}`);
+      return { id, revenue: response.data };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 
-//     try {
-//       const result = await response.json();
-//       return result;
-//     } catch (error) {
-//       return rejectWithValue(error);
-//     }
-//   }
-// );
-
-export const userPromotion = createSlice({
+const userPromotion = createSlice({
   name: "userPromotion",
   initialState: {
     promotion: [],
     loading: false,
     error: null,
     searchData: [],
+    totalRev: 0,
+    promotionRevenues: {},  // Store revenues by promotion ID
   },
-
   reducers: {
     searchUser: (state, action) => {
-      console.log(action.payload);
       state.searchData = action.payload;
     },
   },
-
   extraReducers: (builder) => {
     builder
       .addCase(showPromotion.pending, (state) => {
         state.loading = true;
       })
-      .addCase(showPromotion.fulfilled, (state, action ) => {
-        state.loading = false;
-      state.promotion = action.payload;
-      })
-      .addCase(showPromotion.rejected, (state, action) => {
+      .addCase(showPromotion.fulfilled, (state, action) => {
         state.loading = false;
         state.promotion = action.payload;
       })
-  
-  // {
-  //   [createUser.pending]: (state) => {
-  //     state.loading = true;
-  //   },
-  //   [createUser.fulfilled]: (state, action) => {
-  //     state.loading = false;
-  //     state.users.push(action.payload);
-  //   },
-  //   [createUser.rejected]: (state, action) => {
-  //     state.loading = false;
-  //     state.error = action.payload.message;
-  //   },
-  //   [showPromotion.pending]: (state) => {
-  //     state.loading = true;
-  //   },
-  //   [showPromotion.fulfilled]: (state, action) => {
-  //     state.loading = false;
-  //     state.users = action.payload;
-  //   },
-  //   [showPromotion.rejected]: (state, action) => {
-  //     state.loading = false;
-  //     state.error = action.payload;
-  //   },
-
-  //   [deleteUser.pending]: (state) => {
-  //     state.loading = true;
-  //   },
-  //   [deleteUser.fulfilled]: (state, action) => {
-  //     state.loading = false;
-  //     const { id } = action.payload;
-  //     if (id) {
-  //       state.users = state.users.filter((ele) => ele.id !== id);
-  //     }
-  //   },
-  //   [deleteUser.rejected]: (state, action) => {
-  //     state.loading = false;
-  //     state.error = action.payload;
-  //   },
-
-  //   [updateUser.pending]: (state) => {
-  //     state.loading = true;
-  //   },
-  //   [updateUser.fulfilled]: (state, action) => {
-  //     state.loading = false;
-  //     state.users = state.users.map((ele) =>
-  //       ele.id === action.payload.id ? action.payload : ele
-  //     );
-  //   },
-  //   [updateUser.rejected]: (state, action) => {
-  //     state.loading = false;
-  //     state.error = action.payload.message;
-  //   },
-  // },
-}});
+      .addCase(showPromotion.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getTotalRev.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getTotalRev.fulfilled, (state, action) => {
+        state.loading = false;
+        state.totalRev = action.payload;
+      })
+      .addCase(getTotalRev.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getRevenueByPromotionId.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getRevenueByPromotionId.fulfilled, (state, action) => {
+        state.loading = false;
+        state.promotionRevenues[action.payload.id] = action.payload.revenue;
+      })
+      .addCase(getRevenueByPromotionId.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
+});
 
 export default userPromotion.reducer;
 
