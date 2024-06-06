@@ -7,7 +7,8 @@ import Promotions from './pages/Promotions';
 import Product from './pages/Products';
 import Profile from './pages/Profile';
 import ProtectedRoute from './component/ProtectedRoute';
-import AddPromotion from './pages/AddPromotion'
+import AddPromotion from './pages/AddPromotion';
+import AddProduct from './pages/AddProduct';
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/product" element={<Product />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/addpromotion" element={<AddPromotion/>} />
+          <Route path="/addproduct" element={<AddProduct/>} />
         </Route>
         <Route path="*" element={<div>Page Not Found</div>} />
       </Routes>

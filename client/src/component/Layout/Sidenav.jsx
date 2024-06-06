@@ -22,6 +22,8 @@ import CollectionsIcon from '@mui/icons-material/Collections';
 import { useNavigate } from 'react-router-dom';
 import { updateOpen } from '../../Store/appSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
 
 const drawerWidth = 240;
 
@@ -147,7 +149,7 @@ export default function Sidenav() {
                     justifyContent: 'center',
                   }}
                 >
-                  <InboxIcon />
+                  <ProductionQuantityLimitsIcon />
                 </ListItemIcon>
                 <ListItemText primary="Products" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -167,7 +169,7 @@ export default function Sidenav() {
                     justifyContent: 'center',
                   }}
                 >
-                  <InboxIcon />
+                  <AccountBoxIcon/>
                 </ListItemIcon>
                 <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>

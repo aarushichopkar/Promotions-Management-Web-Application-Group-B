@@ -9,10 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/product")
 public class ProductController {
     private final ProductService productService;
@@ -41,4 +43,10 @@ public class ProductController {
         return (List<Product>) productService.get_Products();
     }
 
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @DeleteMapping("/deleteProduct")
+    public void deleteProduct(@RequestParam("product_id") int id) throws Exception{
+        productService.deleteProduct(id);
+    }
 }

@@ -23,10 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -146,6 +143,10 @@ public class PromotionService {
         return (List<Promotion>) promotionRepo.findAll();
     }
 
+    public List<Promotion> find_by_manager_id(long id) {
+        return promotionRepo.findByManagerId(id);
+    }
+
     public Promotion updatePromotion(long promotionId, Promotion promotion) {
         Optional<Promotion> p = promotionRepo.findById(promotionId);
         if(p.isEmpty()){
@@ -154,7 +155,7 @@ public class PromotionService {
         Promotion pro = p.get();
         pro.setPromotionType(promotion.getPromotionType());
         pro.setEnd_time(promotion.getEnd_time());
-        pro.setManager_id(promotion.getManager_id());
+        pro.setManagerId(promotion.getManagerId());
         pro.setOwner_id(promotion.getOwner_id());
         pro.setDiscount_rate(promotion.getDiscount_rate());
         pro.setActive(promotion.isActive());
@@ -267,4 +268,10 @@ public class PromotionService {
 
         return ((double) totalPurchase /totalVisits)*100;
     }
+
+    public void deletePromotion(long id) throws Exception {
+             promotionRepo.deleteById(id);
+    }
+
+
 }

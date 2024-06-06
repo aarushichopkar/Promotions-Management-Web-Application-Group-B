@@ -17,6 +17,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import MuiAppBar from '@mui/material/AppBar';
 import AddIcon from '@mui/icons-material/Add';
+import Button from '@mui/material/Button';
 
 import { updateOpen } from '../../Store/appSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -211,9 +212,38 @@ export default function Navbar() {
               color="inherit"
             >
               <Badge>
-                <AddIcon onClick={() =>{navigate('/addpromotion');}}/>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                style={{ marginLeft: 16 }}
+                onClick={() =>{navigate('/addpromotion')}}
+                >
+                  Add promotion
+                </Button>
               </Badge>
             </IconButton>
+
+{/*             add product icon */}
+            <IconButton
+            size="large"
+            aria-label="add product"
+            color="inherit"
+            >
+            <Badge>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                style={{ marginLeft: 16 }}
+                onClick={() =>{navigate('/addproduct');}}
+                >
+                  Add product
+                </Button>
+            </Badge>
+            </IconButton>
+
+
             <IconButton
               size="large"
               edge="end"

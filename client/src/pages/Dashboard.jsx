@@ -8,12 +8,14 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import "../Dash.css";
+
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import { useDispatch, useSelector} from "react-redux";
 import { showPromotion, getTotalRev, tcr} from "../Store/promotionSlice";
 import RevenueBarChart from "../component/Layout/RevenueBarChart";
 import CustomerEngageChart from "../component/Layout/CustomerEngageChart";
 import ConversionRateChart from "../component/Layout/ConversionRateChart";
+
 
 function Home() {
   const dispatch = useDispatch();
@@ -36,7 +38,6 @@ function Home() {
 
   useEffect(() => {
     dispatch(showPromotion());
-    dispatch(getTotalRev());
   }, [dispatch]);
 
   return (

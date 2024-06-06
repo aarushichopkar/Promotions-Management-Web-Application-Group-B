@@ -48,9 +48,21 @@ public class PromotionController {
     }
 
 
+    @DeleteMapping
+    public void deletePromotion(@RequestParam("promotion_id") int id) throws Exception{
+        promotionService.deletePromotion(id);
+    }
+
+
     @GetMapping("/find-all")
     public List<Promotion> find_all_promotion(){
             return (List<Promotion>) promotionService.find_all_promotion();
+    }
+
+
+    @GetMapping("/findByManagerId")
+    public List<Promotion> find_by_manager_id(@RequestParam("manager_id") long id){
+        return promotionService.find_by_manager_id(id);
     }
 
     @PutMapping("/update")
