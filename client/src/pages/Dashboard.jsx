@@ -11,7 +11,7 @@ import "../Dash.css";
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import { useDispatch, useSelector } from 'react-redux';
 import { showPromotion, getTotalRev } from '../Store/promotionSlice';
-// import RevenueBarChart from '../component/Layout/RevenueBarChart';
+import RevenueBarChart from '../component/Layout/RevenueBarChart';
 
 function Home() {
   const dispatch = useDispatch();
@@ -80,9 +80,9 @@ function Home() {
                 <Typography gutterBottom variant="h5" component="div">
           Analytics
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus, molestias. Nulla perspiciatis eligendi asperiores ea vero, expedita ut itaque earum qui deleniti at aliquam nobis minima est? Natus, animi ipsa?
-        </Typography>
+        
+         <RevenueBarChart />
+
       </CardContent>
     </Card>
         </Grid>
@@ -113,7 +113,7 @@ function Home() {
               </Card>
             </Grid>
           </Grid>
-          {/* <RevenueBarChart /> */}
+         
         </Box>
       </Box>
     </>

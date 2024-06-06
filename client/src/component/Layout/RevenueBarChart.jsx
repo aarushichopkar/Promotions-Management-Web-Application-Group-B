@@ -1,48 +1,79 @@
-// import React, { useEffect } from 'react';
-// import { Bar } from 'react-chartjs-2';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { getRevenueByPromotionId, showPromotion } from '../../Store/promotionSlice';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRevenueByPromotionId, showPromotion } from '../../Store/promotionSlice';
+import { ChartContainer } from '@mui/x-charts/ChartContainer';
+import { BarPlot } from '@mui/x-charts/BarChart';
+import { Bar } from 'react-chartjs-2'; // Correct import for react-chartjs-2
+import { BarChart }  from '@mui/x-charts/BarChart';
+import { AxisConfig } from '@mui/x-charts'
 
-// const RevenueBarChart = () => {
-//   const dispatch = useDispatch();
-//   const state = useSelector((state) => state);
 
-//   // Log the state to debug
-//   console.log('Complete state:', state);
 
-//   const { promotion, promotionRevenues } = useSelector((state) => state.userPromotion);
+const RevenueBarChart = () => {
+  const dispatch = useDispatch();
 
-//   useEffect(() => {
-//     dispatch(showPromotion());
-//   }, [dispatch]);
+  const { promotion, promotionRevenues } = useSelector((state) => state.promotion);
 
-//   useEffect(() => {
-//     if (promotion.length > 0) {
-//       promotion.forEach((promo) => {
-//         dispatch(getRevenueByPromotionId(promo.id));
-//       });
-//     }
-//   }, [dispatch, promotion]);
+  useEffect(() => {
+    dispatch(showPromotion());
+  }, [dispatch]);
 
-//   const data = {
-//     labels: promotion.map((promo) => promo.promotionType),
-//     datasets: [
-//       {
-//         label: 'Revenue',
-//         data: promotion.map((promo) => promotionRevenues[promo.id] || 0),
-//         backgroundColor: 'rgba(75, 192, 192, 0.6)',
-//         borderColor: 'rgba(75, 192, 192, 1)',
-//         borderWidth: 1,
-//       },
-//     ],
-//   };
+  
+  useEffect(() => {
+    console.log(promotion.length)
+    if (promotion.length > 0) {
+      promotion.forEach((promo) => {
+        dispatch(getRevenueByPromotionId(promo.id));
+      });
+    }
+  }, [dispatch, promotion]);
 
-//   return (
-//     <div>
-//       <h2>Revenue by Promotion</h2>
-//       <Bar data={data} />
-//     </div>
-//   );
-// };
+  const promotionIds = Object.keys(promotionRevenues);
+  const revenues = Object.values(promotionRevenues);
 
-// export default RevenueBarChart;
+  console.log("labels"+promotionIds);
+  console.log("rev"+revenues)
+
+  const data = {
+    
+    labels: promotionIds,
+    datasets: [
+      {
+        label: 'Revenue',
+        data: revenues,
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+      },
+    ],
+
+  };
+
+  console.log("DATA" +data);
+
+  return (
+    <div>
+    <h2 style={{ textAlign: 'center' }}>Promotion Revenue Chart</h2> 
+    <BarChart
+      width={200}
+      height={300}
+      series={[
+        { data: revenues, id: 'pvId' },
+      ]}
+      xAxis={[{ data: promotionIds, scaleType: 'band' }]}
+    />
+    </div>
+  );
+};
+
+export default RevenueBarChart;
+
+
+  //   <ChartContainer
+  //   width={500}
+  //   height={300}
+  //   series={[{ data: revenues, label: 'uv', type: 'bar' }]}
+  //   xAxis={[{ scaleType: 'band', data: promotionIds }]}
+  // >
+  //   <BarPlot />
+  // </ChartContainer>
