@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRevenueByPromotionId, showPromotion } from '../../Store/promotionSlice';
+import { getCustomerEngage, showPromotion } from '../../Store/promotionSlice';
 import { ChartContainer } from '@mui/x-charts/ChartContainer';
 import { BarPlot } from '@mui/x-charts/BarChart';
-import { Bar } from 'react-chartjs-2'; // Correct import for react-chartjs-2
+import { Bar } from 'react-chartjs-2'; 
 import { BarChart }  from '@mui/x-charts/BarChart';
 import { AxisConfig } from '@mui/x-charts'
 
 
 
-const RevenueBarChart = () => {
+
+const CustomerEngageChart = () => {
   const dispatch = useDispatch();
 
-  const { promotion, promotionRevenues } = useSelector((state) => state.promotion);
+  const { promotion, customerEnagage } = useSelector((state) => state.promotion);
 
   useEffect(() => {
     dispatch(showPromotion());
@@ -23,24 +24,33 @@ const RevenueBarChart = () => {
     console.log(promotion.length)
     if (promotion.length > 0) {
       promotion.forEach((promo) => {
-        dispatch(getRevenueByPromotionId(promo.id));
+        dispatch(getCustomerEngage(promo.id));
       });
     }
   }, [dispatch, promotion]);
 
-  const promotionIds = Object.keys(promotionRevenues);
-  const revenues = Object.values(promotionRevenues);
+  const promotionIds = Object.keys(customerEnagage);
+  const visits = Object.values(customerEnagage);
 
-  console.log("labels"+promotionIds);
-  console.log("rev"+revenues)
+  const totalVisitors =  visits.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue
+  },0);
+  
+  useEffect(() => {
+    // Save totalVisitors to local storage
+    localStorage.setItem('totalVisitors', totalVisitors);
+  }, [totalVisitors]);
+
+  console.log("labels "+promotionIds);
+  console.log("visits "+visits)
 
   const data = {
     
     labels: promotionIds,
     datasets: [
       {
-        label: 'Revenue',
-        data: revenues,
+        label: 'Visitors',
+        data: visits,
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
@@ -49,16 +59,16 @@ const RevenueBarChart = () => {
 
   };
 
-  console.log("DATA" +data);
+//   console.log("Customer DATA" +data);
 
   return (
     <div>
-    {/* <h2 style={{ textAlign: 'center' }}>Promotion Revenue Chart</h2>  */}
+    {/* <h2 style={{ textAlign: 'center' }}>Promotion visit Chart</h2>  */}
     <BarChart
       width={200}
       height={300}
       series={[
-        { data: revenues, id: 'pvId' },
+        { data: visits, id: 'pvId' },
       ]}
       xAxis={[{ data: promotionIds, scaleType: 'band' }]}
     />
@@ -66,4 +76,4 @@ const RevenueBarChart = () => {
   );
 };
 
-export default RevenueBarChart;
+export default CustomerEngageChart;

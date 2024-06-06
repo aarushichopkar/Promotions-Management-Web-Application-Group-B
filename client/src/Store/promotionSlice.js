@@ -31,8 +31,31 @@ export const getRevenueByPromotionId = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(`promotion/get-promotion-revenue?promotion-id=${id}`);
-      // console.log("stateProm");
       return { id, revenue: response.data };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const getCustomerEngage = createAsyncThunk(
+  "getCustomerEngage",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(`promotion/get-customer-engagement?promotion-id=${id}`);
+      return { id, visits: response.data };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const getConverionRate = createAsyncThunk(
+  "getConverionRate",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(`promotion/get-conversion-rate?promotion-id=${id}`);
+      return { id, conversionRate: response.data };
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -48,6 +71,8 @@ const userPromotion = createSlice({
     searchData: [],
     totalRev: 0,
     promotionRevenues: {},  // Store revenues by promotion ID
+    customerEnagage: {},
+    conversionRate:{}
   },
   reducers: {
     searchUser: (state, action) => {
@@ -84,16 +109,30 @@ const userPromotion = createSlice({
       .addCase(getRevenueByPromotionId.fulfilled, (state, action) => {
         state.loading = false;
         state.promotionRevenues[action.payload.id] = action.payload.revenue;
-        console.log("payload id"+action.payload.id)
-        // console.log("stateProm" + state.promotionRevenues[action.payload.id] );
-        // const { id, revenue } = action.payload;
-        // state.promotionRevenues[id] = revenue;
-        // state.promotionRevenues[1] = 100;
-        // console.log(`Revenue for promotion ${id}: ${revenue}`);
-        console.log('Updated promotionRevenues:', state.promotionRevenues);
-        console.log("stateProm" + state.promotionRevenues );
       })
       .addCase(getRevenueByPromotionId.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getCustomerEngage.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getCustomerEngage.fulfilled, (state, action) => {
+        state.loading = false;
+        state.customerEnagage[action.payload.id] = action.payload.visits;
+      })
+      .addCase(getCustomerEngage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getConverionRate.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getConverionRate.fulfilled, (state, action) => {
+        state.loading = false;
+        state.conversionRate[action.payload.id] = action.payload.conversionRate;
+      })
+      .addCase(getConverionRate.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
