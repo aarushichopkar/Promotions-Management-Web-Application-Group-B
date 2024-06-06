@@ -91,15 +91,16 @@ function Home() {
               </Stack>
             </Grid>
           </Grid>
-          <Box height={20} />
+          <Box height={20} display="flex" justifyContent="center" alignItems="center"/>
           <Grid container spacing={2}>
             <Grid item xs={8}>
               <Card>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Analytics
+                    Promotion Analytics
+                    <br/>
                   </Typography>
-                  <Grid container spacing={2}>
+                  <Grid container spacing={2} alignItems="center">
                     <Grid item xs={6}>
                       <Card 
                         sx={{
@@ -126,14 +127,15 @@ function Home() {
                         </CardContent>
                       </Card>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} alignSelf={"center"} >
                       <Card 
                         sx={{
-                          maxWidth: "30vw",
-                          maxHeight: "50vh"
+                          maxWidth: "52vw",
+                          maxHeight: "50vh",
+
                         }}
                       >
-                        <CardContent>
+                        <CardContent align="center">
                           <Typography align="center">Conversion Rate Chart</Typography>
                           <ConversionRateChart />
                         </CardContent>
