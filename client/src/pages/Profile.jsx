@@ -8,7 +8,9 @@ import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 
 function Profile() {
-
+  
+  const authToken = localStorage.getItem('auth');
+    const auth = JSON.parse(authToken);
 
   return (
     <>
@@ -22,13 +24,13 @@ function Profile() {
             <Card sx={{ width: '40%', height: 140 }}>
               <CardContent>
                 <Typography variant="h5" component="div">
-                Aarushi Chopkar
+                User Id : {auth.id} 
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Email: {"aarushi@gmail.com"}
+                  Email: {auth.email}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {/* Role: {role || 'Manager'} */}
+                  Role: {auth.role}
                 </Typography>
               </CardContent>
             </Card>

@@ -18,13 +18,14 @@ export default function Promotiontable() {
     { field: 'id', headerName: 'ID', width: 90 },
     { field: 'managerId', headerName: 'Manager ID', width: 90 },
     { field: 'promotionType', headerName: 'Promotion Type', width: 150 },
-    { field: 'creation_time', headerName: 'Creation Time', width: 150 },
-    { field: 'start_time', headerName: 'Start Time', width: 200 },
-    { field: 'end_time', headerName: 'End Time', width: 200 },
+    { field: 'creation_time', headerName: 'Created On', width: 150 },
+    { field: 'start_time', headerName: 'Valid From', width: 200 },
+    { field: 'end_time', headerName: 'Valid Till', width: 200 },
+    { field: 'active', headerName: 'Active State', width: 100 },
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 230,
+      width: 130,
       renderCell: (params) => (
         <strong>
           <Button
