@@ -51,14 +51,41 @@ export const removePromotion = createAsyncThunk(
   }
 );
 
-//delete action
-// export const deleteUser = createAsyncThunk(
-//   "deleteUser",
-//   async (id, { rejectWithValue }) => {
-//     const response = await fetch(
-//       `https://641dd63d945125fff3d75742.mockapi.io/crud/${id}`,
-//       { method: "DELETE" }
-//     );
+export const getRevenueByPromotionId = createAsyncThunk(
+  "getRevenueByPromotionId",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(`promotion/get-promotion-revenue?promotion-id=${id}`);
+      return { id, revenue: response.data };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const getCustomerEngage = createAsyncThunk(
+  "getCustomerEngage",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(`promotion/get-customer-engagement?promotion-id=${id}`);
+      return { id, visits: response.data };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const getConverionRate = createAsyncThunk(
+  "getConverionRate",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(`promotion/get-conversion-rate?promotion-id=${id}`);
+      return { id, conversionRate: response.data };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 
 const userPromotion = createSlice({
   name: "userPromotion",
@@ -67,6 +94,10 @@ const userPromotion = createSlice({
     loading: false,
     error: null,
     searchData: [],
+    totalRev: 0,
+    promotionRevenues: {},  // Store revenues by promotion ID
+    customerEnagage: {},
+    conversionRate:{}
   },
   reducers: {
     searchUser: (state, action) => {
@@ -93,30 +124,41 @@ const userPromotion = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-  
-  // {
-  //   [createUser.pending]: (state) => {
-  //     state.loading = true;
-  //   },
-  //   [createUser.fulfilled]: (state, action) => {
-  //     state.loading = false;
-  //     state.users.push(action.payload);
-  //   },
-  //   [createUser.rejected]: (state, action) => {
-  //     state.loading = false;
-  //     state.error = action.payload.message;
-  //   },
-  //   [showPromotion.pending]: (state) => {
-  //     state.loading = true;
-  //   },
-  //   [showPromotion.fulfilled]: (state, action) => {
-  //     state.loading = false;
-  //     state.users = action.payload;
-  //   },
-  //   [showPromotion.rejected]: (state, action) => {
-  //     state.loading = false;
-  //     state.error = action.payload;
-  //   },
+      .addCase(getRevenueByPromotionId.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getRevenueByPromotionId.fulfilled, (state, action) => {
+        state.loading = false;
+        state.promotionRevenues[action.payload.id] = action.payload.revenue;
+      })
+      .addCase(getRevenueByPromotionId.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getCustomerEngage.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getCustomerEngage.fulfilled, (state, action) => {
+        state.loading = false;
+        state.customerEnagage[action.payload.id] = action.payload.visits;
+      })
+      .addCase(getCustomerEngage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getConverionRate.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getConverionRate.fulfilled, (state, action) => {
+        state.loading = false;
+        state.conversionRate[action.payload.id] = action.payload.conversionRate;
+      })
+      .addCase(getConverionRate.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
+});
 
   //   [deleteUser.pending]: (state) => {
   //     state.loading = true;
@@ -147,7 +189,7 @@ const userPromotion = createSlice({
   //     state.error = action.payload.message;
   //   },
   // },
-}});
+// }});
 export default userPromotion.reducer;
 
 export const { searchUser } = userPromotion.actions;

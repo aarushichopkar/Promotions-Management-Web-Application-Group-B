@@ -1,21 +1,40 @@
-import React, { useEffect } from 'react';
-import Sidenav from '../component/Layout/Sidenav';
-import Box from '@mui/material/Box';
-import Navbar from '../component/Layout/Navbar';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
+import React, { useEffect, useState } from "react";
+import Sidenav from "../component/Layout/Sidenav";
+import Box from "@mui/material/Box";
+import Navbar from "../component/Layout/Navbar";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
 import "../Dash.css";
-import StorefrontIcon from '@mui/icons-material/Storefront';
-import { useDispatch, useSelector } from 'react-redux';
-import { showPromotion } from '../Store/promotionSlice';
+
+import StorefrontIcon from "@mui/icons-material/Storefront";
+import { useDispatch, useSelector} from "react-redux";
+import { showPromotion, getTotalRev, tcr} from "../Store/promotionSlice";
+import RevenueBarChart from "../component/Layout/RevenueBarChart";
+import CustomerEngageChart from "../component/Layout/CustomerEngageChart";
+import ConversionRateChart from "../component/Layout/ConversionRateChart";
+
 
 function Home() {
   const dispatch = useDispatch();
 
-  const { promotion, loading } = useSelector((state) => state.promotion);
+  const { promotion, loading, totalRev, conversionRate, customerEnagage} = useSelector(
+    (state) => state.promotion
+  );
+
+  const conversion = Object.values(conversionRate);
+  const totalConversionRate =  conversion.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue
+  },0);
+
+  const visits = Object.values(customerEnagage);
+  
+  const totalVisitors =  visits.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue
+  },0);
+
 
   useEffect(() => {
     dispatch(showPromotion());
@@ -25,61 +44,121 @@ function Home() {
     <>
       <Navbar />
       <Box height={70} />
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: "flex" }}>
         <Sidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={8}>
               <Stack spacing={2} direction="row">
-                <Card sx={{ maxWidth: "49%", height: 140 }}>
+                <Card sx={{ minWidth: "33%", height: 100 }}>
                   <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography gutterBottom variant="h6" component="div" paddingLeft={"10px"}>
                       Total Visitors
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt perspiciatis maxime reprehenderit deleniti odit! Nostrum reprehenderit.
+                      <br/>
+                    {totalVisitors}
                     </Typography>
                   </CardContent>
                 </Card>
-                <Card sx={{ maxWidth: "49%", height: 140 }}>
+                <Card sx={{ minWidth: "33%", height: 100 }}>
                   <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Conversion Rate
+                    <Typography gutterBottom variant="h6" component="div" paddingLeft={"10px"}>
+                      Conversion Rate 
+                      <br />
+                      {totalConversionRate}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      conversionRate ? conversionRate.value : "No data available"
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus, molestias. Nulla perspiciatis eligendi asperiores ea vero, expedita.
-                    </Typography>
+                  </CardContent>
+                </Card>
+                <Card sx={{ minWidth: "31%", height: 100 }}>
+                  <CardContent>
+                    <Stack spacing={2} direction="row">
+                      <StorefrontIcon />
+                      <div className="paddingall">
+                        <span className="pricetitle">
+                          {totalRev
+                            ? `Rs ${totalRev.toFixed(2)}`
+                            : "Loading..."}
+                        </span>
+                        <br />
+                        <span className="pricesubtitle">Generated Revenue</span>
+                      </div>
+                    </Stack>
                   </CardContent>
                 </Card>
               </Stack>
             </Grid>
             <Grid item xs={4}>
               <Stack spacing={2}>
-                <Card sx={{ flex: 2, height: 200 }}>
-                  <CardContent>
-                    <Stack spacing={2} direction="row">
-                      <StorefrontIcon />
-                    </Stack>
-                  </CardContent>
-                </Card>
+                
               </Stack>
             </Grid>
           </Grid>
-          <Box height={20} />
+          <Box height={20} display="flex" justifyContent="center" alignItems="center"/>
           <Grid container spacing={2}>
             <Grid item xs={8}>
-              <Card sx={{ height: "60vh" }}>
+              <Card>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Analytics
+                    Promotion Analytics
+                    <br/>
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus, molestias. Nulla perspiciatis eligendi asperiores ea vero, expedita ut itaque earum.
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={6}>
+                      <Card 
+                        sx={{
+                          maxWidth: "30vw",
+                          maxHeight: "50vh"
+                        }}
+                      >
+                        <CardContent>
+                          <Typography align="center">Promotion Revenue Chart</Typography>
+                          <RevenueBarChart />
+                        </CardContent>
+                      </Card>
+                      </Grid>
+                      <Grid item xs={6}>
+                      <Card
+                      sx={{
+                        maxWidth: "30vw",
+                        maxHeight: "50vh"
+                      }}
+                      >
+                        <CardContent>
+                          <Typography align="center">Customer Engagment Chart</Typography>
+                          <CustomerEngageChart />
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                    <Grid item xs={12} alignSelf={"center"} >
+                      <Card 
+                        sx={{
+                          maxWidth: "52vw",
+                          maxHeight: "50vh",
+
+                        }}
+                      >
+                        <CardContent align="center">
+                          <Typography align="center">Conversion Rate Chart</Typography>
+                          <ConversionRateChart />
+                        </CardContent>
+                      </Card>
+                      </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={4} sx={{
+              marginTop: "-120px",
+              minHeight: "150vh"
+            }}>
+              <Card sx={{ height: 60 + "vh" }}>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    Active Promotions
                   </Typography>
-                  <Card sx={{ mt: 2 }}>
+
+                  {/* <Card sx={{ maxWidth: 350 }}> */}
                     <CardContent>
-                      {loading ? "Loading..." : promotion.map((promo) => (
+                      {promotion.map((promo) => (
                         <Card key={promo.id} sx={{ mb: 2 }}>
                           <CardContent>
                             <Typography variant="body2" color="text.secondary">
@@ -92,7 +171,7 @@ function Home() {
                         </Card>
                       ))}
                     </CardContent>
-                  </Card>
+                  {/* </Card> */}
                 </CardContent>
               </Card>
             </Grid>
