@@ -41,26 +41,32 @@ const RevenueBarChart = () => {
       {
         label: 'Revenue',
         data: revenues,
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor:  'rgba(54, 162, 235, 0.6)',
+        borderColor:  'rgba(54, 162, 235, 1)',
         borderWidth: 1,
       },
     ],
 
   };
 
-  console.log("DATA" +data);
+  const chartSetting = {
+    yAxis: [
+      {
+        label: 'Revenue in Rs.',
+      },
+    ],
+}
 
   return (
     <div>
-    {/* <h2 style={{ textAlign: 'center' }}>Promotion Revenue Chart</h2>  */}
     <BarChart
       width={200}
       height={300}
       series={[
-        { data: revenues, id: 'pvId' },
+        { data: revenues, id: 'pvId', color: 'rgba(255, 100, 80, 1)' },
       ]}
       xAxis={[{ data: promotionIds, scaleType: 'band' }]}
+      {...chartSetting}
     />
     </div>
   );

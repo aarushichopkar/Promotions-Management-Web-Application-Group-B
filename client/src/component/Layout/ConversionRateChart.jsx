@@ -29,20 +29,10 @@ const ConversionRateChart = () => {
     }
   }, [dispatch, promotion]);
 
+  
+
   const promotionIds = Object.keys(conversionRate);
   const conversion = Object.values(conversionRate);
-
-//   const totalVisitors =  visits.reduce((accumulator, currentValue) => {
-//     return accumulator + currentValue
-//   },0);
-  
-//   useEffect(() => {
-//     // Save totalVisitors to local storage
-//     localStorage.setItem('totalVisitors', totalVisitors);
-//   }, [totalVisitors]);
-
-  console.log("labels "+promotionIds);
-  console.log("visits "+conversion)
 
   const data = {
     
@@ -59,18 +49,25 @@ const ConversionRateChart = () => {
 
   };
 
-//   console.log("Customer DATA" +data);
+  const chartSetting = {
+    yAxis: [
+      {
+        label: 'Conversion Rate',
+      },
+    ],
+}
 
   return (
     <div>
-    {/* <h2 style={{ textAlign: 'center' }}>Promotion visit Chart</h2>  */}
+
     <BarChart
       width={200}
       height={300}
       series={[
-        { data: conversion, id: 'pvId' },
+        { data: conversion, id: 'pvId', color: 'rgba(255, 165, 0, 0.8)' },
       ]}
       xAxis={[{ data: promotionIds, scaleType: 'band' }]}
+      {...chartSetting}
     />
     </div>
   );

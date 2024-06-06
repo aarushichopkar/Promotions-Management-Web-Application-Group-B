@@ -10,7 +10,7 @@ import Stack from "@mui/material/Stack";
 import "../Dash.css";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import { useDispatch, useSelector} from "react-redux";
-import { showPromotion, getTotalRev } from "../Store/promotionSlice";
+import { showPromotion, getTotalRev, tcr} from "../Store/promotionSlice";
 import RevenueBarChart from "../component/Layout/RevenueBarChart";
 import CustomerEngageChart from "../component/Layout/CustomerEngageChart";
 import ConversionRateChart from "../component/Layout/ConversionRateChart";
@@ -18,16 +18,25 @@ import ConversionRateChart from "../component/Layout/ConversionRateChart";
 function Home() {
   const dispatch = useDispatch();
 
-  const { promotion, loading, totalRev } = useSelector(
+  const { promotion, loading, totalRev, conversionRate, customerEnagage} = useSelector(
     (state) => state.promotion
   );
 
-  const [totalvisits, setTotalVisits] = useState(0);
+  const conversion = Object.values(conversionRate);
+  const totalConversionRate =  conversion.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue
+  },0);
+
+  const visits = Object.values(customerEnagage);
+  
+  const totalVisitors =  visits.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue
+  },0);
+
 
   useEffect(() => {
     dispatch(showPromotion());
     dispatch(getTotalRev());
-    setTotalVisits( localStorage.getItem("totalVisitors"));
   }, [dispatch]);
 
   return (
@@ -40,27 +49,25 @@ function Home() {
           <Grid container spacing={2}>
             <Grid item xs={8}>
               <Stack spacing={2} direction="row">
-                <Card sx={{ minWidth: "33%", height: 140 }}>
+                <Card sx={{ minWidth: "33%", height: 100 }}>
                   <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography gutterBottom variant="h6" component="div" paddingLeft={"10px"}>
                       Total Visitors
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                    {totalvisits}
+                      <br/>
+                    {totalVisitors}
                     </Typography>
                   </CardContent>
                 </Card>
-                <Card sx={{ minWidth: "33%", height: 140 }}>
+                <Card sx={{ minWidth: "33%", height: 100 }}>
                   <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Conversion Rate
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      <ConversionRateChart/>
+                    <Typography gutterBottom variant="h6" component="div" paddingLeft={"10px"}>
+                      Conversion Rate 
+                      <br />
+                      {totalConversionRate}
                     </Typography>
                   </CardContent>
                 </Card>
-                <Card sx={{ minWidth: "31%", height: 140 }}>
+                <Card sx={{ minWidth: "31%", height: 100 }}>
                   <CardContent>
                     <Stack spacing={2} direction="row">
                       <StorefrontIcon />
@@ -71,7 +78,7 @@ function Home() {
                             : "Loading..."}
                         </span>
                         <br />
-                        <span className="pricesubtitle">Total Income</span>
+                        <span className="pricesubtitle">Generated Revenue</span>
                       </div>
                     </Stack>
                   </CardContent>
@@ -101,7 +108,7 @@ function Home() {
                         }}
                       >
                         <CardContent>
-                          <Typography>Promotion Revenue Chart</Typography>
+                          <Typography align="center">Promotion Revenue Chart</Typography>
                           <RevenueBarChart />
                         </CardContent>
                       </Card>
@@ -114,7 +121,7 @@ function Home() {
                       }}
                       >
                         <CardContent>
-                          <Typography>Customer Engagment Chart</Typography>
+                          <Typography align="center">Customer Engagment Chart</Typography>
                           <CustomerEngageChart />
                         </CardContent>
                       </Card>
@@ -127,7 +134,7 @@ function Home() {
                         }}
                       >
                         <CardContent>
-                          <Typography>Conversion Rate Chart</Typography>
+                          <Typography align="center">Conversion Rate Chart</Typography>
                           <ConversionRateChart />
                         </CardContent>
                       </Card>
@@ -137,7 +144,7 @@ function Home() {
               </Card>
             </Grid>
             <Grid item xs={4} sx={{
-              marginTop: "-160px",
+              marginTop: "-120px",
               minHeight: "150vh"
             }}>
               <Card sx={{ height: 60 + "vh" }}>

@@ -32,17 +32,6 @@ const CustomerEngageChart = () => {
   const promotionIds = Object.keys(customerEnagage);
   const visits = Object.values(customerEnagage);
 
-  const totalVisitors =  visits.reduce((accumulator, currentValue) => {
-    return accumulator + currentValue
-  },0);
-  
-  useEffect(() => {
-    // Save totalVisitors to local storage
-    localStorage.setItem('totalVisitors', totalVisitors);
-  }, [totalVisitors]);
-
-  console.log("labels "+promotionIds);
-  console.log("visits "+visits)
 
   const data = {
     
@@ -59,11 +48,17 @@ const CustomerEngageChart = () => {
 
   };
 
-//   console.log("Customer DATA" +data);
+const chartSetting = {
+    yAxis: [
+      {
+        label: 'No. of visits',
+      },
+    ],
+
+}
 
   return (
     <div>
-    {/* <h2 style={{ textAlign: 'center' }}>Promotion visit Chart</h2>  */}
     <BarChart
       width={200}
       height={300}
@@ -71,6 +66,7 @@ const CustomerEngageChart = () => {
         { data: visits, id: 'pvId' },
       ]}
       xAxis={[{ data: promotionIds, scaleType: 'band' }]}
+      {...chartSetting}
     />
     </div>
   );
