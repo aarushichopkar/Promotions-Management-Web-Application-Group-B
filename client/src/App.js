@@ -9,6 +9,7 @@ import Profile from './pages/Profile';
 import ProtectedRoute from './component/ProtectedRoute';
 import AddPromotion from './pages/AddPromotion';
 import AddProduct from './pages/AddProduct';
+import EditProduct from './pages/EditProduct';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/addpromotion" element={<AddPromotion/>} />
           <Route path="/addproduct" element={<AddProduct/>} />
+          <Route path="/editproduct/:id" element={<EditProduct/>} />
         </Route>
         <Route path="*" element={<div>Page Not Found</div>} />
       </Routes>

@@ -50,6 +50,25 @@ export const addNewProduct = createAsyncThunk(
   }
 );
 
+
+export const editProduct = createAsyncThunk(
+  "editProduct",
+  async ( { product_id, product }, { rejectWithValue }) => {
+  try{
+    const response = await axiosInstance.post("/product/edit?product_id=" + product_id, product, {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              });
+    console.log("edit product response:", response);
+    return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+  }
+);
+
+
 export const product = createSlice({
   name: "product",
   initialState: {
@@ -95,6 +114,18 @@ export const product = createSlice({
         state.product = state.product.filter(product => product.id !== action.payload);
       })
       .addCase(removeProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      .addCase(editProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(editProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.product = action.payload;
+      })
+      .addCase(editProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })

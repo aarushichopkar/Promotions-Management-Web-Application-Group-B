@@ -15,13 +15,16 @@ import { showPromotion } from '../Store/promotionSlice';
 
 function Home() {
   const dispatch = useDispatch();
-  const { promotion, loading } = useSelector((state) => state.promotion);
+    const { promotion, loading } = useSelector((state) => state.promotion);
 
-  useEffect(() => {
-    dispatch(showPromotion());
-  }, [dispatch]);
+    useEffect(() => {
+      dispatch(showPromotion());
+    }, [dispatch]);
 
-  console.log(promotion)
+    if (loading) {
+      return <h2>Loading</h2>;
+    }
+
   return (
    <>
    <Navbar />
@@ -83,9 +86,9 @@ function Home() {
       <Typography gutterBottom variant="h5" component="div">
           Analytics
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus, molestias. Nulla perspiciatis eligendi asperiores ea vero, expedita ut itaque earum qui deleniti at aliquam nobis minima est? Natus, animi ipsa?
-        </Typography>
+         <Typography variant="body2" color="text.secondary">
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus, molestias. Nulla perspiciatis eligendi asperiores ea vero, expedita ut itaque earum qui deleniti at aliquam nobis minima est? Natus, animi ipsa?
+         </Typography>
       </CardContent>
     </Card>
         </Grid>

@@ -89,4 +89,43 @@ public class ProductService {
 
         productRepo.deleteById(id);
     }
+
+    public Product editProduct(int product_id, Product product) throws Exception{
+        Optional<Product> optionalProduct = productRepo.findById(product_id);
+        Optional<Promotion> optionalPromotion = promotionRepo.findById(product.getProId());
+
+        if(optionalProduct.isEmpty() || optionalPromotion.isEmpty()){
+            throw new Exception("invalid input data");
+        }
+//        System.out.println("product id: " + product_id + ", new promotion id: " + new_proId);
+        Product old_product = optionalProduct.get();
+
+        // remove this product from old promotion products list
+        List<Product> products = old_product.getPromotion().getApplicableProducts();
+        for(Product p: products){
+            if(p.getId() == product_id){
+                products.remove(p);
+                break;
+            }
+        }
+        old_product.getPromotion().setApplicableProducts(products);
+        System.out.println("product deleted from old pro list");
+
+        old_product.setName(product.getName());
+        old_product.setDescription(product.getDescription());
+        old_product.setPrice(product.getPrice());
+        old_product.setProId(product.getProId());
+
+        Promotion newPromotion = optionalPromotion.get();
+        old_product.setPromotion(newPromotion);
+        System.out.println("new product attributes set");
+
+
+        // add this product to new promotion products list
+        newPromotion.getApplicableProducts().add(old_product);
+        System.out.println("product added to new pro list");
+
+        //save edited product
+        return productRepo.save(old_product);
+    }
 }

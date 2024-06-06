@@ -49,4 +49,9 @@ public class ProductController {
     public void deleteProduct(@RequestParam("product_id") int id) throws Exception{
         productService.deleteProduct(id);
     }
+
+    @PutMapping("/edit")
+    public Product editProduct(@RequestParam("product_id") int id, @RequestBody Product product) throws Exception{
+        return productService.editProduct(id, product);
+    }
 }

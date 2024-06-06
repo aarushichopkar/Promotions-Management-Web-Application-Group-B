@@ -5,12 +5,14 @@ import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from "react-redux";
 import { showProduct } from '../../Store/productSlice';
 import { removeProduct } from '../../Store/productSlice';
+import { useNavigate } from 'react-router-dom';
 // import { showPromotion } from '../../Store/promotionSlice';
 // import { showPromotion } from '../../Store/promotionSlice';
 
 
 export default function Producttable() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { product, loading } = useSelector((state) => state.product);
 
@@ -39,6 +41,17 @@ export default function Producttable() {
       width: 230,
       renderCell: (params) => (
         <strong>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            style={{ marginLeft: 16 }}
+            onClick={() =>{ navigate('/editproduct/' + params.row.id); }}
+
+          >
+            Edit
+          </Button>
+
           <Button
             variant="contained"
             color="secondary"
